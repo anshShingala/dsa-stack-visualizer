@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack using Array - DSA Visual Educator</title>
+    <!-- Google Fonts for Outfit (UI) and JetBrains Mono (Pseudocode/Terminal) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Banner -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="badge">DSA LEARNING SUITE</span>
+                <h1>Stack <span class="accent-text">using Array</span></h1>
+            </div>
+        </header>
+
+        <!-- Theory Section -->
+        <section class="theory-section card">
+            <div class="card-header">
+                <h2>Concept Library: Stack via Array</h2>
+                <button class="toggle-btn" id="theory-toggle" aria-expanded="true">Collapse</button>
+            </div>
+            <div class="card-body" id="theory-content">
+                <div class="theory-grid">
+                    <div class="theory-col">
+                        <h3>What is a Stack?</h3>
+                        <p>A <strong>Stack</strong> is a linear data structure that follows the <strong>LIFO (Last In, First Out)</strong> principle. The element inserted last is the first one to be removed. Think of a stack of plates: you place new plates on top, and you take plates off the top.</p>
+                    </div>
+                    <div class="theory-col">
+                        <h3>Array Representation</h3>
+                        <p>When implementing a stack with an <strong>Array</strong>, we allocate a fixed-size buffer. We track the index of the top element using a pointer variable named <code>top</code>. When empty, <code>top</code> is set to <code>-1</code>. The index increases as elements are added.</p>
+                    </div>
+                    <div class="theory-col">
+                        <h3>Edge Conditions</h3>
+                        <p>Because arrays have fixed capacity, we must check for:</p>
+                        <ul>
+                          <li><strong>Stack Overflow:</strong> Adding to a full stack (<code>top == SIZE - 1</code>).</li>
+                          <li><strong>Stack Underflow:</strong> Removing from an empty stack (<code>top == -1</code>).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Simulation Area -->
+        <main class="simulation-workspace">
+            <!-- Left Column: Pseudocode & Explanations -->
+            <section class="panel-left card">
+                <div class="panel-header">
+                    <h2>Pseudocode Debugger</h2>
+                    <div class="debugger-badge" id="debugger-status">IDLE</div>
+                </div>
+                
+                <div class="debugger-layout">
+                    <!-- Step Counter & Title -->
+                    <div class="operation-info">
+                        <span class="operation-name" id="current-op-name">No active operation</span>
+                        <div class="step-counter" id="step-counter-ui">Step: -- / --</div>
+                    </div>
+
+                    <!-- Pseudocode Display -->
+                    <div class="pseudocode-container">
+                        <div class="code-lines-wrapper" id="code-lines-wrapper">
+                            <!-- Lines will be injected dynamically -->
+                            <div class="empty-code-placeholder">Select an operation to load pseudocode</div>
+                        </div>
+                    </div>
+
+                    <!-- Explanation Box -->
+                    <div class="explanation-box">
+                        <div class="explanation-title">Teacher's Explanation</div>
+                        <div class="explanation-text" id="explanation-text">
+                            Select a stack operation from the control panel below, then use "Next Step" to begin stepping through the logic.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Visualization & Console -->
+            <section class="panel-right card">
+                <div class="panel-header">
+                    <h2>Stack Visualization <span class="header-stats-inline" id="stats-summary-ui">Size: 0 / Capacity: 6</span></h2>
+                    <div class="visualizer-badges">
+                        <span class="state-badge empty" id="badge-empty">EMPTY</span>
+                        <span class="state-badge full hidden" id="badge-full">FULL</span>
+                    </div>
+                </div>
+
+                <div class="visualization-area">
+                    <!-- Pointer Track Top -->
+                    <div class="pointer-track" id="top-track-container">
+                        <!-- Top pointer, generated dynamically or styled as absolute -->
+                        <div class="visual-pointer" id="top-pointer" style="transform: translateX(0px);">
+                            <span class="pointer-arrow">▼</span>
+                            <span class="pointer-label">top</span>
+                        </div>
+                    </div>
+
+                    <!-- Array Blocks Display -->
+                    <div class="array-container" id="array-container">
+                        <!-- Array cells generated dynamically -->
+                    </div>
+
+                    <!-- Pointer Track Bottom (Auxiliary) -->
+                    <div class="pointer-track" id="aux-track-container">
+                        <!-- Auxiliary pointer (i) for traversal -->
+                        <div class="visual-pointer aux" id="aux-pointer" style="transform: translateX(0px); opacity: 0;">
+                            <span class="pointer-arrow">▲</span>
+                            <span class="pointer-label">i</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Output Logs (Console) -->
+                <div class="console-card">
+                    <div class="console-header">
+                        <span>Terminal Output</span>
+                        <button class="clear-btn" id="clear-console-btn">Clear Logs</button>
+                    </div>
+                    <div class="console-body" id="console-logs">
+                        <div class="console-line system">> Visualizer initialized. Ready for operations.</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Controls Dashboard -->
+        <footer class="controls-panel card">
+            <div class="controls-grid">
+                <!-- Stack Config Block -->
+                <div class="control-group config-group">
+                    <h3>Stack Config</h3>
+                    <div class="input-action-row">
+                        <div class="input-wrapper">
+                            <label for="stack-size-input">Capacity</label>
+                            <input type="number" id="stack-size-input" min="3" max="10" value="6">
+                        </div>
+                        <button class="btn btn-secondary" id="set-size-btn">Resize</button>
+                    </div>
+                </div>
+
+                <!-- Stack Actions Block -->
+                <div class="control-group actions-group">
+                    <h3>Operations</h3>
+                    <div class="buttons-grid">
+                        <div class="push-action-row">
+                            <input type="text" id="push-value-input" placeholder="Value" maxlength="5">
+                            <button class="btn btn-primary" id="op-push-btn">Push</button>
+                        </div>
+                        <button class="btn btn-primary" id="op-pop-btn">Pop</button>
+                        <button class="btn btn-primary" id="op-peek-btn">Peek</button>
+                        <button class="btn btn-primary" id="op-traverse-btn">Traverse</button>
+                        <button class="btn btn-primary" id="op-isempty-btn">isEmpty</button>
+                        <button class="btn btn-primary" id="op-isfull-btn">isFull</button>
+                        <button class="btn btn-primary" id="op-display-btn">Display</button>
+                    </div>
+                </div>
+
+                <!-- Debug Stepper Block -->
+                <div class="control-group debugger-group">
+                    <h3>Debugger Controls</h3>
+                    <div class="stepper-buttons">
+                        <button class="btn btn-step" id="prev-step-btn" disabled>
+                            <span class="btn-icon">◀</span> Previous Step
+                        </button>
+                        <button class="btn btn-step" id="next-step-btn" disabled>
+                            Next Step <span class="btn-icon">▶</span>
+                        </button>
+                        <button class="btn btn-danger" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
