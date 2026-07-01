@@ -237,143 +237,128 @@
                 </div>
 
                 <!-- CONTAINER FOR PRACTICAL 2: Infix to Postfix -->
-                <div id="practical-2-wrapper" class="practical-wrapper hidden">
-                    <!-- Theory Section -->
-                    <section class="theory-section card" id="theory-section-p2">
-                        <div class="card-header">
-                            <h2>Concept Library: Infix to Postfix Conversion</h2>
-                            <button class="toggle-btn" id="theory-toggle-p2" aria-expanded="true">Collapse</button>
-                        </div>
-                        <div class="card-body" id="theory-content-p2">
-                            <div class="theory-grid">
-                                <div class="theory-col">
-                                    <h3>Conversion Logic</h3>
-                                    <p>An <strong>Infix</strong> expression (e.g., <code>A+B</code>) has operators between operands. A <strong>Postfix</strong> expression (e.g., <code>AB+</code>) places operators after operands, eliminating the need for parentheses and operator precedence rules during evaluation.</p>
+                <div id="practical-2-wrapper" class="practical-wrapper hidden p2-dashboard-wrapper">
+                    <!-- Main Dashboard Workspace -->
+                    <div class="p2-dashboard-main">
+                        <!-- Left Panel: Debugger & Explanation -->
+                        <div class="p2-dashboard-left">
+                            <section class="panel-left card p2-debugger-card">
+                                <div class="panel-header">
+                                    <h2>Pseudocode Debugger</h2>
+                                    <div class="debugger-badge" id="debugger-status-p2">IDLE</div>
                                 </div>
-                                <div class="theory-col">
-                                    <h3>Stack Role</h3>
-                                    <p>We use an operator stack to temporarily store operators and parentheses. When an operator is scanned, we pop and output operators of higher or equal precedence from the stack before pushing the new operator.</p>
-                                </div>
-                                <div class="theory-col">
-                                    <h3>Operator Precedence</h3>
-                                    <p>Precedence rules guide which operator evaluates first: <code>^</code> (exponentiation, highest, right-associative), followed by <code>*</code> and <code>/</code> (medium, left-associative), and <code>+</code> and <code>-</code> (lowest, left-associative).</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                                <div class="debugger-layout">
+                                    <!-- Step Counter & Title -->
+                                    <div class="operation-info">
+                                        <span class="operation-name" id="current-op-name-p2">Infix to Postfix</span>
+                                        <div class="step-counter" id="step-counter-ui-p2">Step: -- / --</div>
+                                    </div>
 
-                    <!-- Main Simulation Area -->
-                    <main class="simulation-workspace">
-                        <!-- Left Column: Pseudocode & Explanations -->
-                        <section class="panel-left card">
-                            <div class="panel-header">
-                                <h2>Pseudocode Debugger</h2>
-                                <div class="debugger-badge" id="debugger-status-p2">IDLE</div>
-                            </div>
-                            
-                            <div class="debugger-layout">
-                                <!-- Step Counter & Title -->
-                                <div class="operation-info">
-                                    <span class="operation-name" id="current-op-name-p2">Infix to Postfix</span>
-                                    <div class="step-counter" id="step-counter-ui-p2">Step: -- / --</div>
-                                </div>
-
-                                <!-- Pseudocode Display -->
-                                <div class="pseudocode-container">
-                                    <div class="code-lines-wrapper" id="code-lines-wrapper-p2">
-                                        <div class="code-line" id="code-line-p2-1">START</div>
-                                        <div class="code-line" id="code-line-p2-2">Scan expression from left to right</div>
-                                        <div class="code-line" id="code-line-p2-3">IF symbol is operand</div>
-                                        <div class="code-line" id="code-line-p2-4">    append symbol to postfix</div>
-                                        <div class="code-line" id="code-line-p2-5">ELSE IF symbol is '('</div>
-                                        <div class="code-line" id="code-line-p2-6">    push '(' into stack</div>
-                                        <div class="code-line" id="code-line-p2-7">ELSE IF symbol is ')'</div>
-                                        <div class="code-line" id="code-line-p2-8">    pop and append until '('</div>
-                                        <div class="code-line" id="code-line-p2-9">    pop and discard '('</div>
-                                        <div class="code-line" id="code-line-p2-10">ELSE</div>
-                                        <div class="code-line" id="code-line-p2-11">    WHILE stack not empty AND shouldPop(top, symbol)</div>
-                                        <div class="code-line" id="code-line-p2-12">        pop and append to postfix</div>
-                                        <div class="code-line" id="code-line-p2-13">    push symbol</div>
-                                        <div class="code-line" id="code-line-p2-14">After scanning complete</div>
-                                        <div class="code-line" id="code-line-p2-15">    WHILE stack not empty</div>
-                                        <div class="code-line" id="code-line-p2-16">        pop and append to postfix</div>
-                                        <div class="code-line" id="code-line-p2-17">STOP</div>
+                                    <!-- Pseudocode Display with Syntax Colors -->
+                                    <div class="pseudocode-container">
+                                        <div class="code-lines-wrapper" id="code-lines-wrapper-p2">
+                                            <div class="code-line" id="code-line-p2-1"><span class="syntax-purple">START</span></div>
+                                            <div class="code-line" id="code-line-p2-2"><span class="syntax-green">Scan expression</span> from left to right</div>
+                                            <div class="code-line" id="code-line-p2-3"><span class="syntax-yellow">IF</span> <span class="syntax-cyan">symbol is operand</span></div>
+                                            <div class="code-line" id="code-line-p2-4">    <span class="syntax-green">append</span> symbol <span class="syntax-orange">to</span> postfix</div>
+                                            <div class="code-line" id="code-line-p2-5"><span class="syntax-yellow">ELSE IF</span> <span class="syntax-cyan">symbol is <span class="syntax-orange">'('</span></span></div>
+                                            <div class="code-line" id="code-line-p2-6">    <span class="syntax-green">push</span> <span class="syntax-orange">'('</span> <span class="syntax-orange">into</span> stack</div>
+                                            <div class="code-line" id="code-line-p2-7"><span class="syntax-yellow">ELSE IF</span> <span class="syntax-cyan">symbol is <span class="syntax-orange">')'</span></span></div>
+                                            <div class="code-line" id="code-line-p2-8">    <span class="syntax-green">pop</span> <span class="syntax-orange">and</span> <span class="syntax-green">append</span> <span class="syntax-orange">until</span> <span class="syntax-orange">'('</span></div>
+                                            <div class="code-line" id="code-line-p2-9">    <span class="syntax-green">pop</span> <span class="syntax-orange">and</span> <span class="syntax-green">discard</span> <span class="syntax-orange">'('</span></div>
+                                            <div class="code-line" id="code-line-p2-10"><span class="syntax-yellow">ELSE</span></div>
+                                            <div class="code-line" id="code-line-p2-11">    <span class="syntax-yellow">WHILE</span> <span class="syntax-cyan">stack not empty <span class="syntax-orange">AND</span> <span class="syntax-green">shouldPop</span>(top, op)</span></div>
+                                            <div class="code-line" id="code-line-p2-12">        <span class="syntax-green">pop</span> <span class="syntax-orange">and</span> <span class="syntax-green">append</span> <span class="syntax-orange">to</span> postfix</div>
+                                            <div class="code-line" id="code-line-p2-13">    <span class="syntax-green">push</span> symbol</div>
+                                            <div class="code-line" id="code-line-p2-14">After scanning complete</div>
+                                            <div class="code-line" id="code-line-p2-15">    <span class="syntax-yellow">WHILE</span> <span class="syntax-cyan">stack not empty</span></div>
+                                            <div class="code-line" id="code-line-p2-16">        <span class="syntax-green">pop</span> <span class="syntax-orange">and</span> <span class="syntax-green">append</span> <span class="syntax-orange">to</span> postfix</div>
+                                            <div class="code-line" id="code-line-p2-17"><span class="syntax-purple">STOP</span></div>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <!-- Explanation Box -->
-                                <div class="explanation-box">
-                                    <div class="explanation-title">Teacher's Explanation</div>
-                                    <div class="explanation-text" id="explanation-text-p2">
-                                        Enter an infix expression (e.g., A*(B+C-D)) in the control panel below and click "Initialize" to load the visualizer.
-                                    </div>
+                            </section>
+                            <div class="explanation-box card p2-explanation-card">
+                                <div class="explanation-title">Teacher's Explanation</div>
+                                <div class="explanation-text" id="explanation-text-p2">
+                                    Enter an infix expression (e.g., A*(B+C-D)) in the control panel below and click "Initialize" to load the visualizer.
                                 </div>
                             </div>
-                        </section>
+                        </div>
 
-                        <!-- Right Column: Visualization & Console -->
-                        <section class="panel-right card">
-                            <div class="panel-header">
-                                <h2>Conversion Visuals</h2>
-                                <div class="view-toggle-container">
-                                    <button class="btn-toggle active" id="btn-toggle-interactive">Interactive View</button>
-                                    <button class="btn-toggle" id="btn-toggle-table">Table View</button>
-                                </div>
-                            </div>
-
-                            <!-- Interactive View Area -->
-                            <div class="visualization-area" id="interactive-view-area">
-                                <!-- Infix Scan Row -->
-                                <div class="infix-scan-row">
-                                    <span class="visual-label">Infix Expression:</span>
-                                    <div class="infix-display" id="infix-display">
+                        <!-- Right Panel: Visualizer & Terminal -->
+                        <div class="p2-dashboard-right">
+                            <!-- Top Info Bars -->
+                            <div class="p2-info-bars">
+                                <div class="p2-info-bar p2-infix-bar card">
+                                    <span class="p2-info-label">Infix Expression:</span>
+                                    <div class="p2-infix-display" id="infix-display">
                                         <span class="empty-infix-placeholder">No expression loaded</span>
                                     </div>
                                 </div>
-
-                                <!-- Vertical Stack and Postfix Output Wrapper -->
-                                <div class="interactive-split">
-                                    <!-- Operator Stack (Vertical Container) -->
-                                    <div class="vertical-stack-container">
-                                        <span class="visual-label">Operator Stack</span>
-                                        <div class="vertical-stack" id="vertical-operator-stack">
-                                            <div class="empty-stack-msg">Empty</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Postfix Output Builder -->
-                                    <div class="postfix-builder-container">
-                                        <span class="visual-label">Postfix Output</span>
-                                        <div class="postfix-output-display" id="postfix-output-display">
-                                            <span class="empty-postfix-placeholder">Empty</span>
-                                        </div>
-                                    </div>
+                                <div class="p2-info-bar p2-symbol-bar card">
+                                    <span class="p2-info-label">Current Symbol:</span>
+                                    <span class="p2-symbol-val" id="table-live-symbol-val">-</span>
                                 </div>
                             </div>
 
-                            <!-- Table View Area (Hidden by default) -->
-                            <div class="visualization-area hidden" id="table-view-area">
-                                <div class="table-live-indicator" id="table-live-indicator-p2">
-                                    Current Symbol: <span class="accent-text" id="table-live-symbol-val">-</span>
+                            <!-- Conversion Visuals Panel -->
+                            <div class="p2-visuals-panel card">
+                                <div class="panel-header">
+                                    <h2>Conversion Visuals</h2>
+                                    <div class="p2-header-actions">
+                                        <div class="view-toggle-container">
+                                            <button class="btn-toggle active" id="btn-toggle-interactive">Interactive View</button>
+                                            <button class="btn-toggle" id="btn-toggle-table">Table View</button>
+                                        </div>
+                                        <button class="btn btn-secondary btn-drawer-trigger" id="p2-theory-trigger">Theory</button>
+                                        <button class="btn btn-secondary btn-drawer-trigger" id="p2-cpp-trigger">C++ Code</button>
+                                    </div>
                                 </div>
-                                <div class="table-scroll-container" id="table-scroll-container-p2">
-                                    <table class="visual-table" id="visual-table-p2">
-                                        <thead>
-                                            <tr>
-                                                <th>Current Symbol</th>
-                                                <th>Stack</th>
-                                                <th>Postfix Output</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="table-body-p2">
-                                            <!-- Rows injected dynamically -->
-                                        </tbody>
-                                    </table>
+
+                                <!-- Interactive View Area -->
+                                <div class="visualization-area" id="interactive-view-area">
+                                    <div class="interactive-split">
+                                        <!-- Operator Stack (Vertical Container) -->
+                                        <div class="vertical-stack-container">
+                                            <span class="visual-label">Operator Stack</span>
+                                            <div class="vertical-stack" id="vertical-operator-stack">
+                                                <div class="empty-stack-msg">Empty</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Postfix Output Builder -->
+                                        <div class="postfix-builder-container">
+                                            <span class="visual-label">Postfix Output</span>
+                                            <div class="postfix-output-display" id="postfix-output-display">
+                                                <span class="empty-postfix-placeholder">Empty</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Table View Area (Hidden by default) -->
+                                <div class="visualization-area hidden" id="table-view-area">
+                                    <div class="table-scroll-container" id="table-scroll-container-p2">
+                                        <table class="visual-table" id="visual-table-p2">
+                                            <thead>
+                                                <tr>
+                                                    <th>Step</th>
+                                                    <th>Current Symbol</th>
+                                                    <th>Stack</th>
+                                                    <th>Postfix Output</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-body-p2">
+                                                <!-- Rows injected dynamically -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Simulation Output Logs (Console) -->
-                            <div class="console-card">
+                            <div class="console-card p2-console-card">
                                 <div class="console-header">
                                     <span>Terminal Output</span>
                                     <button class="clear-btn" id="clear-console-btn-p2">Clear Logs</button>
@@ -382,11 +367,11 @@
                                     <div class="console-line system">> Visualizer initialized. Enter an infix expression.</div>
                                 </div>
                             </div>
-                        </section>
-                    </main>
+                        </div>
+                    </div>
 
-                    <!-- Controls Dashboard -->
-                    <footer class="controls-panel card">
+                    <!-- Bottom Fixed Control Bar -->
+                    <footer class="controls-panel card p2-control-bar">
                         <div class="controls-grid">
                             <!-- Infix Input block -->
                             <div class="control-group config-group">
@@ -427,12 +412,38 @@
                         </div>
                     </footer>
 
-                    <!-- C++ Source Code Section -->
-                    <section class="cpp-code-section card">
-                        <div class="card-header">
-                            <h2>C++ Source Code: Infix to Postfix Conversion</h2>
+                    <!-- Hidden Drawers for Theory and C++ code -->
+                    <div class="p2-drawer-overlay" id="p2-drawer-overlay"></div>
+                    
+                    <div class="p2-drawer" id="p2-theory-drawer">
+                        <div class="p2-drawer-header">
+                            <h2>Concept Library: Infix to Postfix</h2>
+                            <button class="p2-drawer-close" id="p2-theory-close-btn">&times;</button>
                         </div>
-                        <div class="card-body">
+                        <div class="p2-drawer-body">
+                            <div class="theory-grid-vertical">
+                                <div class="theory-col">
+                                    <h3>Conversion Logic</h3>
+                                    <p>An <strong>Infix</strong> expression (e.g., <code>A+B</code>) has operators between operands. A <strong>Postfix</strong> expression (e.g., <code>AB+</code>) places operators after operands, eliminating the need for parentheses and operator precedence rules during evaluation.</p>
+                                </div>
+                                <div class="theory-col">
+                                    <h3>Stack Role</h3>
+                                    <p>We use an operator stack to temporarily store operators and parentheses. When an operator is scanned, we pop and output operators of higher or equal precedence from the stack before pushing the new operator.</p>
+                                </div>
+                                <div class="theory-col">
+                                    <h3>Operator Precedence</h3>
+                                    <p>Precedence rules guide which operator evaluates first: <code>^</code> (exponentiation, highest, right-associative), followed by <code>*</code> and <code>/</code> (medium, left-associative), and <code>+</code> and <code>-</code> (lowest, left-associative).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p2-drawer" id="p2-cpp-drawer">
+                        <div class="p2-drawer-header">
+                            <h2>C++ Source Code</h2>
+                            <button class="p2-drawer-close" id="p2-cpp-close-btn">&times;</button>
+                        </div>
+                        <div class="p2-drawer-body">
                             <p class="cpp-desc">Below is the complete C++ implementation using standard templates. This code mimics the exact algorithm simulated above.</p>
                             <pre class="cpp-code"><code id="cpp-code-block">#include &lt;iostream&gt;
 #include &lt;stack&gt;
@@ -514,7 +525,7 @@ int main() {
     return 0;
 }</code></pre>
                         </div>
-                    </section>
+                    </div>
                 </div>
             </div>
         </main>

@@ -1118,7 +1118,7 @@ input[type="text"]:focus {
 /* Interactive Split Area Layout */
 .interactive-split {
     display: grid;
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 160px 1fr;
     gap: 20px;
     width: 100%;
 }
@@ -1441,4 +1441,404 @@ input[type="text"]:focus {
     .sidebar-open-btn {
         display: none !important; /* Hide open trigger button on tablet/mobile size */
     }
+}
+
+/* ==========================================================================
+   PRACTICAL 2 COMPACT WIDESCREEN SMART-BOARD DASHBOARD
+   ========================================================================== */
+
+/* Main layout wrapper */
+.p2-dashboard-wrapper {
+    height: calc(100vh - 115px); /* Strict height lock to fit 1080p smartboards */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+}
+
+/* Widescreen Desktop Grid (Projektor-friendly) */
+.p2-dashboard-main {
+    display: grid;
+    grid-template-columns: 39% 61%; /* 39% left panel width to prevent pseudocode text clipping */
+    gap: 16px;
+    flex: 1;
+    min-height: 0; /* Inheritable scroll sizing */
+}
+
+/* Left panel layouts */
+.p2-dashboard-left {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
+    min-height: 0;
+}
+
+.p2-debugger-card {
+    flex: 0 0 67%; /* Reduced from 72% to increase explanation card height */
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.p2-debugger-card .debugger-layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.p2-debugger-card .pseudocode-container {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.p2-explanation-card {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+/* Right panel layouts */
+.p2-dashboard-right {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
+    min-height: 0;
+}
+
+/* Top Info Bars */
+.p2-info-bars {
+    display: flex;
+    gap: 14px;
+    flex: 0 0 auto; /* Natural fit without percentage constraints */
+    margin-bottom: 2px;
+}
+
+.p2-info-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    min-width: 0;
+}
+
+.p2-infix-bar {
+    flex: 0 0 58%; /* Reduced from 65% to allocate more space to symbol bar */
+}
+
+.p2-symbol-bar {
+    flex: 1;
+    justify-content: flex-start;
+    gap: 12px; /* Close spacing avoids text clipping */
+}
+
+.p2-info-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-text-dark);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.p2-infix-display {
+    background-color: var(--bg-terminal);
+    border: 1px solid rgba(148, 163, 184, 0.05);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    font-family: var(--font-code);
+    font-size: 1.15rem;
+    font-weight: 700;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.p2-infix-display::-webkit-scrollbar {
+    display: none;
+}
+
+.p2-infix-display .infix-char {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+    font-family: var(--font-code);
+    color: var(--color-text);
+    flex-shrink: 0; /* Keep width completely fixed to prevent spacing shifts */
+}
+
+.p2-infix-display .infix-char.scanned {
+    color: var(--color-text-dark);
+    opacity: 0.5;
+}
+
+.p2-infix-display .infix-char.active-char {
+    color: #020617;
+    background-color: var(--color-cyan);
+    box-shadow: 0 0 10px var(--color-cyan-glow);
+    transform: scale(1.15);
+    font-weight: 800;
+    border-radius: 4px;
+}
+
+.p2-symbol-val {
+    font-family: var(--font-code);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-cyan);
+    text-shadow: 0 0 6px var(--color-cyan-glow);
+}
+
+/* Visualizer Sizing */
+.p2-visuals-panel {
+    flex: 0 0 54%; /* Strict proportional height to separate from terminal card */
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.p2-visuals-panel .visualization-area {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Strict containment of child visual components */
+}
+
+.p2-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-drawer-trigger {
+    padding: 6px 12px !important;
+    font-size: 0.8rem !important;
+    border-color: rgba(148, 163, 184, 0.15) !important;
+}
+
+/* Terminal Sizing */
+.p2-console-card {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 16px !important;
+}
+
+.p2-console-card .console-body {
+    flex: 1;
+    height: auto !important;
+}
+
+#console-logs-p2 {
+    font-family: var(--font-code);
+    color: #39ff14; /* neon green text */
+    text-shadow: 0 0 5px rgba(57, 255, 20, 0.2);
+}
+
+#console-logs-p2 .console-line.system {
+    color: #86efac;
+}
+
+#console-logs-p2 .console-line.success {
+    color: #4ade80;
+}
+
+#console-logs-p2 .console-line.error {
+    color: #f43f5e;
+}
+
+#console-logs-p2 .console-line.warn {
+    color: #fbbf24;
+}
+
+/* Bottom Control Bar Styling (teacher smartboard touch controls) */
+.p2-control-bar {
+    flex: 0 0 auto;
+    background: rgba(19, 27, 46, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+    padding: 12px 24px;
+}
+
+.p2-control-bar .controls-grid {
+    grid-template-columns: 310px 1fr 340px !important;
+    gap: 16px;
+    align-items: center;
+}
+
+/* Custom Table scroll container override for P2 */
+#table-scroll-container-p2 {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    max-height: none; /* Disable static heights */
+}
+
+/* Style for Step numbers column */
+.visual-table td.step-num-col {
+    font-weight: 700;
+    color: var(--color-violet);
+    text-shadow: 0 0 4px rgba(139, 92, 246, 0.2);
+}
+
+/* Style for EOF Badge in scan bar */
+.p2-infix-display .infix-char.eof-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0 8px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    margin-left: 6px;
+    opacity: 0.6;
+    border-radius: 4px;
+    width: auto;
+    height: 26px;
+}
+
+.p2-infix-display .infix-char.eof-badge.active-char {
+    opacity: 1;
+    color: #020617;
+    background-color: var(--color-cyan);
+    box-shadow: 0 0 10px var(--color-cyan-glow);
+    border-color: var(--color-cyan);
+}
+
+/* Scaled font-size for p2 pseudocode to prevent overflow */
+#code-lines-wrapper-p2 .code-line {
+    font-size: 0.92rem;
+    padding: 3px 6px;
+}
+
+/* Pseudocode Syntax Highlighting */
+.syntax-purple { color: #c084fc; font-weight: 600; }
+.syntax-yellow { color: #fef08a; font-weight: 600; }
+.syntax-cyan { color: #22d3ee; }
+.syntax-green { color: #4ade80; font-weight: 600; }
+.syntax-orange { color: #fb923c; }
+
+/* Active line cyan highlight override for p2 */
+#code-lines-wrapper-p2 .code-line.line-highlight {
+    background-color: rgba(6, 182, 212, 0.12);
+    color: var(--color-text);
+    border-left-color: var(--color-cyan);
+    box-shadow: inset 2px 0 0 rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.1);
+}
+
+/* Slide-out Drawer Panel overlay */
+.p2-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(2, 6, 23, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.p2-drawer-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Slide-out Drawer Panel Widget */
+.p2-drawer {
+    position: fixed;
+    top: 0;
+    right: -550px;
+    width: 500px;
+    height: 100vh;
+    background-color: var(--bg-card);
+    border-left: 1px solid var(--border-card-highlight);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    transition: right 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+}
+
+.p2-drawer.open {
+    right: 0;
+}
+
+.p2-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+.p2-drawer-header h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-cyan);
+}
+
+.p2-drawer-close {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: var(--transition-smooth);
+}
+
+.p2-drawer-close:hover {
+    color: var(--color-rose);
+}
+
+.p2-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.theory-grid-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Table View Live symbol tracker above table */
+.table-live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.05);
+    width: 100%;
 }

@@ -1962,20 +1962,36 @@ function renderInteractiveViewP2() {
         return;
     }
     
+    const step = infixState.steps[infixState.currentStepIndex];
+    const isEOF = step && (step.lineIndex === 14 || step.lineIndex === 15 || step.lineIndex === 16);
+    
     // Highlight characters in scan row
     infixDisplay.innerHTML = "";
     for (let i = 0; i < infixState.infixExpression.length; i++) {
         const char = infixState.infixExpression[i];
         const span = document.createElement("span");
         span.className = "infix-char";
-        if (i === infixState.scannedIndex) {
-            span.classList.add("active-char");
-        } else if (i < infixState.scannedIndex) {
+        if (isEOF) {
             span.classList.add("scanned");
+        } else {
+            if (i === infixState.scannedIndex) {
+                span.classList.add("active-char");
+            } else if (i < infixState.scannedIndex) {
+                span.classList.add("scanned");
+            }
         }
         span.textContent = char;
         infixDisplay.appendChild(span);
     }
+    
+    // Append EOF badge
+    const eofSpan = document.createElement("span");
+    eofSpan.className = "infix-char eof-badge";
+    eofSpan.textContent = "EOF";
+    if (isEOF) {
+        eofSpan.classList.add("active-char");
+    }
+    infixDisplay.appendChild(eofSpan);
     
     // Render operator stack list
     stackDisplay.innerHTML = "";
@@ -2037,6 +2053,10 @@ function renderTableViewP2() {
     finalized.forEach((row) => {
         const tr = document.createElement("tr");
         
+        const tdStep = document.createElement("td");
+        tdStep.textContent = `Step ${row.stepIndex + 1}`;
+        tdStep.className = "step-num-col";
+        
         const tdSymbol = document.createElement("td");
         tdSymbol.textContent = row.symbol;
         
@@ -2046,6 +2066,7 @@ function renderTableViewP2() {
         const tdPostfix = document.createElement("td");
         tdPostfix.textContent = row.postfixAfter || "empty";
         
+        tr.appendChild(tdStep);
         tr.appendChild(tdSymbol);
         tr.appendChild(tdStack);
         tr.appendChild(tdPostfix);
@@ -2057,6 +2078,10 @@ function renderTableViewP2() {
         const tr = document.createElement("tr");
         tr.className = "live-row";
         
+        const tdStep = document.createElement("td");
+        tdStep.textContent = `Step ${infixState.currentStepIndex + 1}`;
+        tdStep.className = "step-num-col";
+        
         const tdSymbol = document.createElement("td");
         tdSymbol.textContent = currentSymbolName;
         
@@ -2066,6 +2091,7 @@ function renderTableViewP2() {
         const tdPostfix = document.createElement("td");
         tdPostfix.textContent = infixState.postfixResult || "empty";
         
+        tr.appendChild(tdStep);
         tr.appendChild(tdSymbol);
         tr.appendChild(tdStack);
         tr.appendChild(tdPostfix);
@@ -2098,7 +2124,7 @@ function highlightLineP2(lineNum) {
     const lineEl = document.getElementById(`code-line-p2-${lineNum}`);
     if (lineEl) {
         lineEl.classList.add("line-highlight");
-        lineEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        lineEl.scrollIntoView({ block: "center", behavior: "smooth" });
     }
 }
 
@@ -2248,19 +2274,40 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Theory Toggle P2
-    const theoryToggleP2 = document.getElementById("theory-toggle-p2");
-    const theorySectionP2 = document.getElementById("theory-section-p2");
-    if (theoryToggleP2 && theorySectionP2) {
-        theoryToggleP2.addEventListener("click", () => {
-            const expanded = theoryToggleP2.getAttribute("aria-expanded") === "true";
-            theoryToggleP2.setAttribute("aria-expanded", !expanded);
-            theoryToggleP2.textContent = expanded ? "Expand" : "Collapse";
-            if (expanded) {
-                theorySectionP2.classList.add("collapsed");
-            } else {
-                theorySectionP2.classList.remove("collapsed");
-            }
-        });
+    // Slide-out Drawer triggers for Theory and C++ code
+    const theoryTrigger = document.getElementById("p2-theory-trigger");
+    const cppTrigger = document.getElementById("p2-cpp-trigger");
+    const theoryDrawer = document.getElementById("p2-theory-drawer");
+    const cppDrawer = document.getElementById("p2-cpp-drawer");
+    const drawerOverlay = document.getElementById("p2-drawer-overlay");
+    const theoryClose = document.getElementById("p2-theory-close-btn");
+    const cppClose = document.getElementById("p2-cpp-close-btn");
+
+    function openP2Drawer(drawer) {
+        if (!drawer) return;
+        drawer.classList.add("open");
+        if (drawerOverlay) drawerOverlay.classList.add("visible");
+    }
+
+    function closeAllP2Drawers() {
+        if (theoryDrawer) theoryDrawer.classList.remove("open");
+        if (cppDrawer) cppDrawer.classList.remove("open");
+        if (drawerOverlay) drawerOverlay.classList.remove("visible");
+    }
+
+    if (theoryTrigger) {
+        theoryTrigger.addEventListener("click", () => openP2Drawer(theoryDrawer));
+    }
+    if (cppTrigger) {
+        cppTrigger.addEventListener("click", () => openP2Drawer(cppDrawer));
+    }
+    if (theoryClose) {
+        theoryClose.addEventListener("click", closeAllP2Drawers);
+    }
+    if (cppClose) {
+        cppClose.addEventListener("click", closeAllP2Drawers);
+    }
+    if (drawerOverlay) {
+        drawerOverlay.addEventListener("click", closeAllP2Drawers);
     }
 });
