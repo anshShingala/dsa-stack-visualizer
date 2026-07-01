@@ -1866,3 +1866,119 @@ input[type="text"]:focus {
     justify-content: flex-end;
     width: 100%;
 }
+
+/* ==========================================================================
+   C++ CODE VIEWER, FULLSCREEN TRANSITIONS & SYNTAX HIGHLIGHTING
+   ========================================================================== */
+
+/* VS Code style editor container */
+.cpp-code-container {
+    display: flex;
+    background-color: #1e1e1e !important;
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    overflow: auto;
+    flex: 1;
+    min-height: 280px; /* Safe default height */
+    scrollbar-width: thin;
+    scrollbar-color: #3e3e3e transparent;
+}
+
+/* IDE Style line numbers */
+.cpp-line-numbers {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    padding-right: 12px;
+    border-right: 1px solid rgba(148, 163, 184, 0.12);
+    color: #858585; /* mid gray */
+    user-select: none;
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* IDE pre-formatted code block */
+.cpp-code-pre {
+    margin: 0;
+    padding-left: 12px;
+    overflow-x: auto;
+    flex: 1;
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre;
+}
+
+/* Syntax colors */
+.cpp-keyword { color: #569cd6; font-weight: bold; }
+.cpp-type { color: #4ec9b0; }
+.cpp-string { color: #6a9955; }
+.cpp-comment { color: #808080; font-style: italic; }
+.cpp-operator { color: #fb923c; }
+.cpp-func { color: #fef08a; }
+.cpp-literal { color: #b5cea8; }
+
+/* Slide-out Fullscreen modal mode */
+.p2-drawer.fullscreen {
+    right: 2.5vw !important;
+    left: 2.5vw !important;
+    top: 5vh !important;
+    width: 95vw !important;
+    height: 90vh !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    background-color: #1e1e1e;
+    padding: 28px;
+    z-index: 10001; /* Higher than overlays */
+}
+
+/* Fullscreen text scaling for classroom projectors */
+.p2-drawer.fullscreen .cpp-code-pre,
+.p2-drawer.fullscreen .cpp-line-numbers {
+    font-size: 1.15rem !important;
+}
+
+/* Header buttons wrapper */
+.p2-drawer-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Copy code success outline indicator animation */
+.btn-copy {
+    transition: all 0.25s ease;
+}
+
+/* Sample IO Terminal Styling */
+.cpp-sample-io {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cpp-sample-io h3 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.sample-io-block {
+    background-color: #121212;
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-family: var(--font-code);
+    font-size: 0.85rem;
+    color: #4ade80; /* neon green text */
+    line-height: 1.5;
+    margin: 0;
+    overflow-x: auto;
+}

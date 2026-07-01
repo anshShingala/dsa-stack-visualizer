@@ -441,70 +441,96 @@
                     <div class="p2-drawer" id="p2-cpp-drawer">
                         <div class="p2-drawer-header">
                             <h2>C++ Source Code</h2>
-                            <button class="p2-drawer-close" id="p2-cpp-close-btn">&times;</button>
+                            <div class="p2-drawer-header-actions">
+                                <button class="btn btn-secondary btn-copy" id="p2-cpp-copy-btn">📋 Copy Code</button>
+                                <button class="btn btn-secondary btn-fullscreen" id="p2-cpp-fullscreen-btn">⛶ Fullscreen</button>
+                                <button class="p2-drawer-close" id="p2-cpp-close-btn">&times;</button>
+                            </div>
                         </div>
                         <div class="p2-drawer-body">
-                            <p class="cpp-desc">Below is the complete C++ implementation using standard templates. This code mimics the exact algorithm simulated above.</p>
-                            <pre class="cpp-code"><code id="cpp-code-block">#include &lt;iostream&gt;
-#include &lt;stack&gt;
-#include &lt;string&gt;
-using namespace std;
+                            <p class="cpp-desc">Below is the clean C++ implementation for classroom exams, using standard stack libraries.</p>
+                            
+                            <div class="cpp-code-container">
+                                <div class="cpp-line-numbers">
+                                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span><span>32</span><span>33</span><span>34</span><span>35</span><span>36</span><span>37</span><span>38</span><span>39</span><span>40</span><span>41</span><span>42</span><span>43</span><span>44</span><span>45</span><span>46</span><span>47</span><span>48</span><span>49</span><span>50</span><span>51</span><span>52</span><span>53</span><span>54</span><span>55</span><span>56</span><span>57</span><span>58</span><span>59</span><span>60</span><span>61</span><span>62</span><span>63</span><span>64</span>
+                                </div>
+                                <pre class="cpp-code-pre"><code id="cpp-code-block"><span class="cpp-keyword">#include</span> <span class="cpp-string">&lt;iostream&gt;</span>
+<span class="cpp-keyword">#include</span> <span class="cpp-string">&lt;stack&gt;</span>
+<span class="cpp-keyword">#include</span> <span class="cpp-string">&lt;string&gt;</span>
+<span class="cpp-keyword">using</span> <span class="cpp-keyword">namespace</span> <span class="cpp-keyword">std</span>;
 
-int precedence(char op) {
-    if (op == '^') return 3;
-    if (op == '*' || op == '/') return 2;
-    if (op == '+' || op == '-') return 1;
-    return 0;
+<span class="cpp-type">int</span> <span class="cpp-func">precedence</span>(<span class="cpp-type">char</span> op) {
+    <span class="cpp-keyword">if</span> (op <span class="cpp-operator">==</span> <span class="cpp-string">'^'</span>) <span class="cpp-keyword">return</span> <span class="cpp-literal">3</span>;
+    <span class="cpp-keyword">if</span> (op <span class="cpp-operator">==</span> <span class="cpp-string">'*'</span> <span class="cpp-operator">||</span> op <span class="cpp-operator">==</span> <span class="cpp-string">'/'</span>) <span class="cpp-keyword">return</span> <span class="cpp-literal">2</span>;
+    <span class="cpp-keyword">if</span> (op <span class="cpp-operator">==</span> <span class="cpp-string">'+'</span> <span class="cpp-operator">||</span> op <span class="cpp-operator">==</span> <span class="cpp-string">'-'</span>) <span class="cpp-keyword">return</span> <span class="cpp-literal">1</span>;
+    <span class="cpp-keyword">return</span> <span class="cpp-literal">0</span>;
 }
 
-bool isOperand(char c) {
-    return isalnum(c);
+<span class="cpp-type">bool</span> <span class="cpp-func">isOperand</span>(<span class="cpp-type">char</span> c) {
+    <span class="cpp-keyword">return</span> <span class="cpp-func">isalnum</span>(c);
 }
 
-string infixToPostfix(string expr) {
-    stack&lt;char&gt; st;
-    string result = "";
+<span class="cpp-keyword">string</span> <span class="cpp-func">infixToPostfix</span>(<span class="cpp-keyword">string</span> expr) {
+    <span class="cpp-keyword">stack</span>&lt;<span class="cpp-type">char</span>&gt; st;
+    <span class="cpp-keyword">string</span> result <span class="cpp-operator">=</span> <span class="cpp-string">""</span>;
 
-    for (char c : expr) {
-        if (isOperand(c)) {
-            result += c;
-        } else if (c == '(') {
+    <span class="cpp-keyword">for</span> (<span class="cpp-type">char</span> c : expr) {
+        <span class="cpp-keyword">if</span> (<span class="cpp-func">isOperand</span>(c)) {
+            result <span class="cpp-operator">+=</span> c;
+        }
+        <span class="cpp-keyword">else</span> <span class="cpp-keyword">if</span> (c <span class="cpp-operator">==</span> <span class="cpp-string">'('</span>) {
             st.push(c);
-        } else if (c == ')') {
-            while (!st.empty() && st.top() != '(') {
-                result += st.top();
+        }
+        <span class="cpp-keyword">else</span> <span class="cpp-keyword">if</span> (c <span class="cpp-operator">==</span> <span class="cpp-string">')'</span>) {
+            <span class="cpp-keyword">while</span> (<span class="cpp-operator">!</span>st.empty() <span class="cpp-operator">&amp;&amp;</span> st.top() <span class="cpp-operator">!=</span> <span class="cpp-string">'('</span>) {
+                result <span class="cpp-operator">+=</span> st.top();
                 st.pop();
             }
-            if (!st.empty()) st.pop();
-        } else {
-            while (!st.empty() &&
-                   precedence(st.top()) >= precedence(c)) {
-                result += st.top();
+            <span class="cpp-keyword">if</span> (<span class="cpp-operator">!</span>st.empty())
+                st.pop();
+        }
+        <span class="cpp-keyword">else</span> {
+            <span class="cpp-keyword">while</span> (<span class="cpp-operator">!</span>st.empty() <span class="cpp-operator">&amp;&amp;</span>
+                   <span class="cpp-func">precedence</span>(st.top()) <span class="cpp-operator">&gt;=</span> <span class="cpp-func">precedence</span>(c)) {
+                result <span class="cpp-operator">+=</span> st.top();
                 st.pop();
             }
             st.push(c);
         }
     }
 
-    while (!st.empty()) {
-        result += st.top();
+    <span class="cpp-keyword">while</span> (<span class="cpp-operator">!</span>st.empty()) {
+        result <span class="cpp-operator">+=</span> st.top();
         st.pop();
     }
 
-    return result;
+    <span class="cpp-keyword">return</span> result;
 }
 
-int main() {
-    string expr;
-    cout &lt;&lt; "Enter infix expression: ";
-    cin &gt;&gt; expr;
+<span class="cpp-type">int</span> <span class="cpp-func">main</span>() {
+    <span class="cpp-keyword">string</span> expr;
+    cout <span class="cpp-operator">&lt;&lt;</span> <span class="cpp-string">"Enter infix expression: "</span>;
+    cin <span class="cpp-operator">&gt;&gt;</span> expr;
 
-    cout &lt;&lt; "Postfix: "
-         &lt;&lt; infixToPostfix(expr)
-         &lt;&lt; endl;
+    cout <span class="cpp-operator">&lt;&lt;</span> <span class="cpp-string">"Postfix: "</span>
+         <span class="cpp-operator">&lt;&lt;</span> <span class="cpp-func">infixToPostfix</span>(expr)
+         <span class="cpp-operator">&lt;&lt;</span> endl;
 
-    return 0;
+    <span class="cpp-keyword">return</span> <span class="cpp-literal">0</span>;
 }</code></pre>
+                            </div>
+                            
+                            <!-- Sample Input/Output Section -->
+                            <div class="cpp-sample-io">
+                                <h3>Sample Input / Output</h3>
+                                <pre class="sample-io-block"><code>Example 1:
+Enter infix expression: (A+B)*(C-D)
+Postfix: AB+CD-*
+
+Example 2:
+Enter infix expression: A+B*C-D
+Postfix: ABC*+D-</code></pre>
+                            </div>
                         </div>
                     </div>
                 </div>

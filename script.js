@@ -2282,6 +2282,8 @@ window.addEventListener("DOMContentLoaded", () => {
     const drawerOverlay = document.getElementById("p2-drawer-overlay");
     const theoryClose = document.getElementById("p2-theory-close-btn");
     const cppClose = document.getElementById("p2-cpp-close-btn");
+    const cppFullscreenBtn = document.getElementById("p2-cpp-fullscreen-btn");
+    const cppCopyBtn = document.getElementById("p2-cpp-copy-btn");
 
     function openP2Drawer(drawer) {
         if (!drawer) return;
@@ -2291,7 +2293,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
     function closeAllP2Drawers() {
         if (theoryDrawer) theoryDrawer.classList.remove("open");
-        if (cppDrawer) cppDrawer.classList.remove("open");
+        if (cppDrawer) {
+            cppDrawer.classList.remove("open");
+            cppDrawer.classList.remove("fullscreen");
+        }
+        if (cppFullscreenBtn) {
+            cppFullscreenBtn.innerHTML = "⛶ Fullscreen";
+            cppFullscreenBtn.classList.remove("active");
+        }
         if (drawerOverlay) drawerOverlay.classList.remove("visible");
     }
 
@@ -2309,5 +2318,99 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     if (drawerOverlay) {
         drawerOverlay.addEventListener("click", closeAllP2Drawers);
+    }
+
+    // Fullscreen toggle event listener
+    if (cppFullscreenBtn) {
+        cppFullscreenBtn.addEventListener("click", () => {
+            if (cppDrawer) {
+                const isFullscreen = cppDrawer.classList.toggle("fullscreen");
+                cppFullscreenBtn.innerHTML = isFullscreen ? "Collapse View" : "⛶ Fullscreen";
+                cppFullscreenBtn.classList.toggle("active", isFullscreen);
+            }
+        });
+    }
+
+    // Copy C++ code to clipboard
+    if (cppCopyBtn) {
+        cppCopyBtn.addEventListener("click", () => {
+            const codeToCopy = `#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int precedence(char op) {
+    if (op == '^') return 3;
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    return 0;
+}
+
+bool isOperand(char c) {
+    return isalnum(c);
+}
+
+string infixToPostfix(string expr) {
+    stack<char> st;
+    string result = "";
+
+    for (char c : expr) {
+        if (isOperand(c)) {
+            result += c;
+        }
+        else if (c == '(') {
+            st.push(c);
+        }
+        else if (c == ')') {
+            while (!st.empty() && st.top() != '(') {
+                result += st.top();
+                st.pop();
+            }
+            if (!st.empty())
+                st.pop();
+        }
+        else {
+            while (!st.empty() &&
+                   precedence(st.top()) >= precedence(c)) {
+                result += st.top();
+                st.pop();
+            }
+            st.push(c);
+        }
+    }
+
+    while (!st.empty()) {
+        result += st.top();
+        st.pop();
+    }
+
+    return result;
+}
+
+int main() {
+    string expr;
+    cout << "Enter infix expression: ";
+    cin >> expr;
+
+    cout << "Postfix: "
+         << infixToPostfix(expr)
+         << endl;
+
+    return 0;
+}`;
+            navigator.clipboard.writeText(codeToCopy).then(() => {
+                const originalText = cppCopyBtn.innerHTML;
+                cppCopyBtn.innerHTML = "✓ Copied!";
+                cppCopyBtn.style.borderColor = "#10b981";
+                cppCopyBtn.style.color = "#10b981";
+                setTimeout(() => {
+                    cppCopyBtn.innerHTML = originalText;
+                    cppCopyBtn.style.borderColor = "";
+                    cppCopyBtn.style.color = "";
+                }, 2000);
+            }).catch(err => {
+                console.error("Failed to copy code: ", err);
+            });
+        });
     }
 });
