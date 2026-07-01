@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stack using Array - DSA Visual Educator</title>
+    <title>DSA Practicals Visualizer - DSA Visual Educator</title>
     <!-- Google Fonts for Outfit (UI) and JetBrains Mono (Pseudocode/Terminal) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,174 +11,514 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header Banner -->
-        <header class="app-header">
-            <div class="logo-area">
-                <span class="badge">DSA LEARNING SUITE</span>
-                <h1>Stack <span class="accent-text">using Array</span></h1>
+    <div class="app-layout">
+        <!-- Collapsible Sidebar Menu -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>DSA Practicals</h2>
+                <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" aria-label="Collapse Sidebar">◀</button>
             </div>
-        </header>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-target="practical-1">
+                    <span class="nav-num">1.</span> Stack using Array
+                </button>
+                <button class="nav-item" data-target="practical-2">
+                    <span class="nav-num">2.</span> Infix to Postfix
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">3.</span> Postfix Evaluation <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">4.</span> Towers of Hanoi <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">5.</span> Queue <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">6.</span> Singly Linked List <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">7.</span> Doubly Linked List <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">8.</span> Circular Linked List <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">9.</span> Searching Algorithms <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">10.</span> Sorting Algorithms <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">11.</span> Binary Search Tree <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">12.</span> BST Traversals <span class="badge-coming">Soon</span>
+                </button>
+                <button class="nav-item disabled" disabled>
+                    <span class="nav-num">13.</span> Graph Traversals <span class="badge-coming">Soon</span>
+                </button>
+            </nav>
+        </aside>
 
-        <!-- Theory Section -->
-        <section class="theory-section card">
-            <div class="card-header">
-                <h2>Concept Library: Stack via Array</h2>
-                <button class="toggle-btn" id="theory-toggle" aria-expanded="true">Collapse</button>
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <!-- Sidebar Open Trigger Button (visible when collapsed) -->
+            <button class="sidebar-open-btn" id="sidebar-open-btn" aria-label="Open Sidebar">☰ Menu</button>
+            
+            <div class="app-container">
+                <!-- Header Banner -->
+                <header class="app-header">
+                    <div class="logo-area">
+                        <span class="badge">DSA LEARNING SUITE</span>
+                        <h1 id="app-main-title">Stack <span class="accent-text">using Array</span></h1>
+                    </div>
+                </header>
+
+                <!-- CONTAINER FOR PRACTICAL 1: Stack Array -->
+                <div id="practical-1-wrapper" class="practical-wrapper">
+                    <!-- Theory Section -->
+                    <section class="theory-section card">
+                        <div class="card-header">
+                            <h2>Concept Library: Stack via Array</h2>
+                            <button class="toggle-btn" id="theory-toggle" aria-expanded="true">Collapse</button>
+                        </div>
+                        <div class="card-body" id="theory-content">
+                            <div class="theory-grid">
+                                <div class="theory-col">
+                                    <h3>What is a Stack?</h3>
+                                    <p>A <strong>Stack</strong> is a linear data structure that follows the <strong>LIFO (Last In, First Out)</strong> principle. The element inserted last is the first one to be removed. Think of a stack of plates: you place new plates on top, and you take plates off the top.</p>
+                                </div>
+                                <div class="theory-col">
+                                    <h3>Array Representation</h3>
+                                    <p>When implementing a stack with an <strong>Array</strong>, we allocate a fixed-size buffer. We track the index of the top element using a pointer variable named <code>top</code>. When empty, <code>top</code> is set to <code>-1</code>. The index increases as elements are added.</p>
+                                </div>
+                                <div class="theory-col">
+                                    <h3>Edge Conditions</h3>
+                                    <p>Because arrays have fixed capacity, we must check for:</p>
+                                    <ul>
+                                        <li><strong>Stack Overflow:</strong> Adding to a full stack (<code>top == SIZE - 1</code>).</li>
+                                        <li><strong>Stack Underflow:</strong> Removing from an empty stack (<code>top == -1</code>).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Main Simulation Area -->
+                    <main class="simulation-workspace">
+                        <!-- Left Column: Pseudocode & Explanations -->
+                        <section class="panel-left card">
+                            <div class="panel-header">
+                                <h2>Pseudocode Debugger</h2>
+                                <div class="debugger-badge" id="debugger-status">IDLE</div>
+                            </div>
+                            
+                            <div class="debugger-layout">
+                                <!-- Step Counter & Title -->
+                                <div class="operation-info">
+                                    <span class="operation-name" id="current-op-name">No active operation</span>
+                                    <div class="step-counter" id="step-counter-ui">Step: -- / --</div>
+                                </div>
+
+                                <!-- Pseudocode Display -->
+                                <div class="pseudocode-container">
+                                    <div class="code-lines-wrapper" id="code-lines-wrapper">
+                                        <!-- Lines will be injected dynamically -->
+                                        <div class="empty-code-placeholder">Select an operation to load pseudocode</div>
+                                    </div>
+                                </div>
+
+                                <!-- Explanation Box -->
+                                <div class="explanation-box">
+                                    <div class="explanation-title">Teacher's Explanation</div>
+                                    <div class="explanation-text" id="explanation-text">
+                                        Select a stack operation from the control panel below, then use "Next Step" to begin stepping through the logic.
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Right Column: Visualization & Console -->
+                        <section class="panel-right card">
+                            <div class="panel-header">
+                                <h2>Stack Visualization <span class="header-stats-inline" id="stats-summary-ui">Size: 0 / Capacity: 6</span></h2>
+                                <div class="visualizer-badges">
+                                    <span class="state-badge empty" id="badge-empty">EMPTY</span>
+                                    <span class="state-badge full hidden" id="badge-full">FULL</span>
+                                </div>
+                            </div>
+
+                            <div class="visualization-area">
+                                <!-- Pointer Track Top -->
+                                <div class="pointer-track" id="top-track-container">
+                                    <!-- Top pointer, generated dynamically or styled as absolute -->
+                                    <div class="visual-pointer" id="top-pointer" style="transform: translateX(0px);">
+                                        <span class="pointer-arrow">▼</span>
+                                        <span class="pointer-label">top</span>
+                                    </div>
+                                </div>
+
+                                <!-- Array Blocks Display -->
+                                <div class="array-container" id="array-container">
+                                    <!-- Array cells generated dynamically -->
+                                </div>
+
+                                <!-- Pointer Track Bottom (Auxiliary) -->
+                                <div class="pointer-track" id="aux-track-container">
+                                    <!-- Auxiliary pointer (i) for traversal -->
+                                    <div class="visual-pointer aux" id="aux-pointer" style="transform: translateX(0px); opacity: 0;">
+                                        <span class="pointer-arrow">▲</span>
+                                        <span class="pointer-label">i</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Simulation Output Logs (Console) -->
+                            <div class="console-card">
+                                <div class="console-header">
+                                    <span>Terminal Output</span>
+                                    <button class="clear-btn" id="clear-console-btn">Clear Logs</button>
+                                </div>
+                                <div class="console-body" id="console-logs">
+                                    <div class="console-line system">> Visualizer initialized. Ready for operations.</div>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+
+                    <!-- Controls Dashboard -->
+                    <footer class="controls-panel card">
+                        <div class="controls-grid">
+                            <!-- Stack Config Block -->
+                            <div class="control-group config-group">
+                                <h3>Stack Config</h3>
+                                <div class="input-action-row">
+                                    <div class="input-wrapper">
+                                        <label for="stack-size-input">Capacity</label>
+                                        <input type="number" id="stack-size-input" min="3" max="10" value="6">
+                                    </div>
+                                    <button class="btn btn-secondary" id="set-size-btn">Resize</button>
+                                </div>
+                            </div>
+
+                            <!-- Stack Actions Block -->
+                            <div class="control-group actions-group">
+                                <h3>Operations</h3>
+                                <div class="buttons-grid">
+                                    <div class="push-action-row">
+                                        <input type="text" id="push-value-input" placeholder="Value" maxlength="5">
+                                        <button class="btn btn-primary" id="op-push-btn">Push</button>
+                                    </div>
+                                    <button class="btn btn-primary" id="op-pop-btn">Pop</button>
+                                    <button class="btn btn-primary" id="op-peek-btn">Peek</button>
+                                    <button class="btn btn-primary" id="op-traverse-btn">Traverse</button>
+                                    <button class="btn btn-primary" id="op-isempty-btn">isEmpty</button>
+                                    <button class="btn btn-primary" id="op-isfull-btn">isFull</button>
+                                    <button class="btn btn-primary" id="op-display-btn">Display</button>
+                                </div>
+                            </div>
+
+                            <!-- Debug Stepper Block -->
+                            <div class="control-group debugger-group">
+                                <h3>Debugger Controls</h3>
+                                <div class="stepper-buttons">
+                                    <button class="btn btn-step" id="prev-step-btn" disabled>
+                                        <span class="btn-icon">◀</span> Previous Step
+                                    </button>
+                                    <button class="btn btn-step" id="next-step-btn" disabled>
+                                        Next Step <span class="btn-icon">▶</span>
+                                    </button>
+                                    <button class="btn btn-danger" id="reset-btn">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+
+                <!-- CONTAINER FOR PRACTICAL 2: Infix to Postfix -->
+                <div id="practical-2-wrapper" class="practical-wrapper hidden">
+                    <!-- Theory Section -->
+                    <section class="theory-section card" id="theory-section-p2">
+                        <div class="card-header">
+                            <h2>Concept Library: Infix to Postfix Conversion</h2>
+                            <button class="toggle-btn" id="theory-toggle-p2" aria-expanded="true">Collapse</button>
+                        </div>
+                        <div class="card-body" id="theory-content-p2">
+                            <div class="theory-grid">
+                                <div class="theory-col">
+                                    <h3>Conversion Logic</h3>
+                                    <p>An <strong>Infix</strong> expression (e.g., <code>A+B</code>) has operators between operands. A <strong>Postfix</strong> expression (e.g., <code>AB+</code>) places operators after operands, eliminating the need for parentheses and operator precedence rules during evaluation.</p>
+                                </div>
+                                <div class="theory-col">
+                                    <h3>Stack Role</h3>
+                                    <p>We use an operator stack to temporarily store operators and parentheses. When an operator is scanned, we pop and output operators of higher or equal precedence from the stack before pushing the new operator.</p>
+                                </div>
+                                <div class="theory-col">
+                                    <h3>Operator Precedence</h3>
+                                    <p>Precedence rules guide which operator evaluates first: <code>^</code> (exponentiation, highest, right-associative), followed by <code>*</code> and <code>/</code> (medium, left-associative), and <code>+</code> and <code>-</code> (lowest, left-associative).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Main Simulation Area -->
+                    <main class="simulation-workspace">
+                        <!-- Left Column: Pseudocode & Explanations -->
+                        <section class="panel-left card">
+                            <div class="panel-header">
+                                <h2>Pseudocode Debugger</h2>
+                                <div class="debugger-badge" id="debugger-status-p2">IDLE</div>
+                            </div>
+                            
+                            <div class="debugger-layout">
+                                <!-- Step Counter & Title -->
+                                <div class="operation-info">
+                                    <span class="operation-name" id="current-op-name-p2">Infix to Postfix</span>
+                                    <div class="step-counter" id="step-counter-ui-p2">Step: -- / --</div>
+                                </div>
+
+                                <!-- Pseudocode Display -->
+                                <div class="pseudocode-container">
+                                    <div class="code-lines-wrapper" id="code-lines-wrapper-p2">
+                                        <div class="code-line" id="code-line-p2-1">START</div>
+                                        <div class="code-line" id="code-line-p2-2">Scan expression from left to right</div>
+                                        <div class="code-line" id="code-line-p2-3">IF symbol is operand</div>
+                                        <div class="code-line" id="code-line-p2-4">    append symbol to postfix</div>
+                                        <div class="code-line" id="code-line-p2-5">ELSE IF symbol is '('</div>
+                                        <div class="code-line" id="code-line-p2-6">    push '(' into stack</div>
+                                        <div class="code-line" id="code-line-p2-7">ELSE IF symbol is ')'</div>
+                                        <div class="code-line" id="code-line-p2-8">    pop and append until '('</div>
+                                        <div class="code-line" id="code-line-p2-9">    pop and discard '('</div>
+                                        <div class="code-line" id="code-line-p2-10">ELSE</div>
+                                        <div class="code-line" id="code-line-p2-11">    WHILE stack not empty AND shouldPop(top, symbol)</div>
+                                        <div class="code-line" id="code-line-p2-12">        pop and append to postfix</div>
+                                        <div class="code-line" id="code-line-p2-13">    push symbol</div>
+                                        <div class="code-line" id="code-line-p2-14">After scanning complete</div>
+                                        <div class="code-line" id="code-line-p2-15">    WHILE stack not empty</div>
+                                        <div class="code-line" id="code-line-p2-16">        pop and append to postfix</div>
+                                        <div class="code-line" id="code-line-p2-17">STOP</div>
+                                    </div>
+                                </div>
+
+                                <!-- Explanation Box -->
+                                <div class="explanation-box">
+                                    <div class="explanation-title">Teacher's Explanation</div>
+                                    <div class="explanation-text" id="explanation-text-p2">
+                                        Enter an infix expression (e.g., A*(B+C-D)) in the control panel below and click "Initialize" to load the visualizer.
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Right Column: Visualization & Console -->
+                        <section class="panel-right card">
+                            <div class="panel-header">
+                                <h2>Conversion Visuals</h2>
+                                <div class="view-toggle-container">
+                                    <button class="btn-toggle active" id="btn-toggle-interactive">Interactive View</button>
+                                    <button class="btn-toggle" id="btn-toggle-table">Table View</button>
+                                </div>
+                            </div>
+
+                            <!-- Interactive View Area -->
+                            <div class="visualization-area" id="interactive-view-area">
+                                <!-- Infix Scan Row -->
+                                <div class="infix-scan-row">
+                                    <span class="visual-label">Infix Expression:</span>
+                                    <div class="infix-display" id="infix-display">
+                                        <span class="empty-infix-placeholder">No expression loaded</span>
+                                    </div>
+                                </div>
+
+                                <!-- Vertical Stack and Postfix Output Wrapper -->
+                                <div class="interactive-split">
+                                    <!-- Operator Stack (Vertical Container) -->
+                                    <div class="vertical-stack-container">
+                                        <span class="visual-label">Operator Stack</span>
+                                        <div class="vertical-stack" id="vertical-operator-stack">
+                                            <div class="empty-stack-msg">Empty</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Postfix Output Builder -->
+                                    <div class="postfix-builder-container">
+                                        <span class="visual-label">Postfix Output</span>
+                                        <div class="postfix-output-display" id="postfix-output-display">
+                                            <span class="empty-postfix-placeholder">Empty</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Table View Area (Hidden by default) -->
+                            <div class="visualization-area hidden" id="table-view-area">
+                                <div class="table-live-indicator" id="table-live-indicator-p2">
+                                    Current Symbol: <span class="accent-text" id="table-live-symbol-val">-</span>
+                                </div>
+                                <div class="table-scroll-container" id="table-scroll-container-p2">
+                                    <table class="visual-table" id="visual-table-p2">
+                                        <thead>
+                                            <tr>
+                                                <th>Current Symbol</th>
+                                                <th>Stack</th>
+                                                <th>Postfix Output</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body-p2">
+                                            <!-- Rows injected dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Simulation Output Logs (Console) -->
+                            <div class="console-card">
+                                <div class="console-header">
+                                    <span>Terminal Output</span>
+                                    <button class="clear-btn" id="clear-console-btn-p2">Clear Logs</button>
+                                </div>
+                                <div class="console-body" id="console-logs-p2">
+                                    <div class="console-line system">> Visualizer initialized. Enter an infix expression.</div>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+
+                    <!-- Controls Dashboard -->
+                    <footer class="controls-panel card">
+                        <div class="controls-grid">
+                            <!-- Infix Input block -->
+                            <div class="control-group config-group">
+                                <h3>Expression Input</h3>
+                                <div class="input-action-row">
+                                    <div class="input-wrapper">
+                                        <label for="infix-input">Infix Expression</label>
+                                        <input type="text" id="infix-input" placeholder="e.g. A+B*C" value="A*(B+C-D)">
+                                    </div>
+                                    <button class="btn btn-primary" id="btn-init-p2">Initialize</button>
+                                </div>
+                            </div>
+
+                            <!-- Presets Block -->
+                            <div class="control-group actions-group">
+                                <h3>Predefined Examples</h3>
+                                <div class="buttons-grid presets-grid">
+                                    <button class="btn btn-secondary btn-preset" data-expr="A+B*C">A+B*C</button>
+                                    <button class="btn btn-secondary btn-preset" data-expr="A*(B+C-D)">A*(B+C-D)</button>
+                                    <button class="btn btn-secondary btn-preset" data-expr="A^B^C">A^B^C</button>
+                                    <button class="btn btn-secondary btn-preset" data-expr="(A+B)*(C-D)">Parentheses</button>
+                                </div>
+                            </div>
+
+                            <!-- Debug Stepper Block -->
+                            <div class="control-group debugger-group">
+                                <h3>Debugger Controls</h3>
+                                <div class="stepper-buttons">
+                                    <button class="btn btn-step" id="prev-step-btn-p2" disabled>
+                                        <span class="btn-icon">◀</span> Previous Step
+                                    </button>
+                                    <button class="btn btn-step" id="next-step-btn-p2" disabled>
+                                        Next Step <span class="btn-icon">▶</span>
+                                    </button>
+                                    <button class="btn btn-danger" id="reset-btn-p2">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+
+                    <!-- C++ Source Code Section -->
+                    <section class="cpp-code-section card">
+                        <div class="card-header">
+                            <h2>C++ Source Code: Infix to Postfix Conversion</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="cpp-desc">Below is the complete C++ implementation using standard templates. This code mimics the exact algorithm simulated above.</p>
+                            <pre class="cpp-code"><code id="cpp-code-block">#include &lt;iostream&gt;
+#include &lt;stack&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+// Helper to determine operator precedence
+int getPrecedence(char op) {
+    if (op == '^') return 3;
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    if (op == '(') return 0;
+    return -1;
+}
+
+// Helper to check if left associative
+bool isLeftAssociative(char op) {
+    return op != '^';
+}
+
+// Logic matching the shouldPop visualizer function
+bool shouldPop(char stackTop, char currentOperator) {
+    if (stackTop == '(') return false;
+    int pTop = getPrecedence(stackTop);
+    int pCurr = getPrecedence(currentOperator);
+    return (pTop &gt; pCurr) || (pTop == pCurr && isLeftAssociative(currentOperator));
+}
+
+// Function to convert Infix to Postfix
+string infixToPostfix(string infix) {
+    stack&lt;char&gt; s;
+    string postfix = "";
+
+    for (int i = 0; i &lt; infix.length(); i++) {
+        char symbol = infix[i];
+
+        // 1. IF symbol is operand
+        if (isalnum(symbol)) {
+            postfix += symbol;
+        }
+        // 2. ELSE IF symbol is '('
+        else if (symbol == '(') {
+            s.push('(');
+        }
+        // 3. ELSE IF symbol is ')'
+        else if (symbol == ')') {
+            while (!s.empty() && s.top() != '(') {
+                postfix += s.top();
+                s.pop();
+            }
+            if (!s.empty()) {
+                s.pop(); // Discard '('
+            }
+        }
+        // 4. ELSE (operator)
+        else {
+            while (!s.empty() && shouldPop(s.top(), symbol)) {
+                postfix += s.top();
+                s.pop();
+            }
+            s.push(symbol);
+        }
+    }
+
+    // Pop remaining operators
+    while (!s.empty()) {
+        postfix += s.top();
+        s.pop();
+    }
+
+    return postfix;
+}
+
+int main() {
+    string infix = "A*(B+C-D)";
+    cout &lt;&lt; "Infix: " &lt;&lt; infix &lt;&lt; endl;
+    cout &lt;&lt; "Postfix: " &lt;&lt; infixToPostfix(infix) &lt;&lt; endl;
+    return 0;
+}</code></pre>
+                        </div>
+                    </section>
+                </div>
             </div>
-            <div class="card-body" id="theory-content">
-                <div class="theory-grid">
-                    <div class="theory-col">
-                        <h3>What is a Stack?</h3>
-                        <p>A <strong>Stack</strong> is a linear data structure that follows the <strong>LIFO (Last In, First Out)</strong> principle. The element inserted last is the first one to be removed. Think of a stack of plates: you place new plates on top, and you take plates off the top.</p>
-                    </div>
-                    <div class="theory-col">
-                        <h3>Array Representation</h3>
-                        <p>When implementing a stack with an <strong>Array</strong>, we allocate a fixed-size buffer. We track the index of the top element using a pointer variable named <code>top</code>. When empty, <code>top</code> is set to <code>-1</code>. The index increases as elements are added.</p>
-                    </div>
-                    <div class="theory-col">
-                        <h3>Edge Conditions</h3>
-                        <p>Because arrays have fixed capacity, we must check for:</p>
-                        <ul>
-                          <li><strong>Stack Overflow:</strong> Adding to a full stack (<code>top == SIZE - 1</code>).</li>
-                          <li><strong>Stack Underflow:</strong> Removing from an empty stack (<code>top == -1</code>).</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Main Simulation Area -->
-        <main class="simulation-workspace">
-            <!-- Left Column: Pseudocode & Explanations -->
-            <section class="panel-left card">
-                <div class="panel-header">
-                    <h2>Pseudocode Debugger</h2>
-                    <div class="debugger-badge" id="debugger-status">IDLE</div>
-                </div>
-                
-                <div class="debugger-layout">
-                    <!-- Step Counter & Title -->
-                    <div class="operation-info">
-                        <span class="operation-name" id="current-op-name">No active operation</span>
-                        <div class="step-counter" id="step-counter-ui">Step: -- / --</div>
-                    </div>
-
-                    <!-- Pseudocode Display -->
-                    <div class="pseudocode-container">
-                        <div class="code-lines-wrapper" id="code-lines-wrapper">
-                            <!-- Lines will be injected dynamically -->
-                            <div class="empty-code-placeholder">Select an operation to load pseudocode</div>
-                        </div>
-                    </div>
-
-                    <!-- Explanation Box -->
-                    <div class="explanation-box">
-                        <div class="explanation-title">Teacher's Explanation</div>
-                        <div class="explanation-text" id="explanation-text">
-                            Select a stack operation from the control panel below, then use "Next Step" to begin stepping through the logic.
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Right Column: Visualization & Console -->
-            <section class="panel-right card">
-                <div class="panel-header">
-                    <h2>Stack Visualization <span class="header-stats-inline" id="stats-summary-ui">Size: 0 / Capacity: 6</span></h2>
-                    <div class="visualizer-badges">
-                        <span class="state-badge empty" id="badge-empty">EMPTY</span>
-                        <span class="state-badge full hidden" id="badge-full">FULL</span>
-                    </div>
-                </div>
-
-                <div class="visualization-area">
-                    <!-- Pointer Track Top -->
-                    <div class="pointer-track" id="top-track-container">
-                        <!-- Top pointer, generated dynamically or styled as absolute -->
-                        <div class="visual-pointer" id="top-pointer" style="transform: translateX(0px);">
-                            <span class="pointer-arrow">▼</span>
-                            <span class="pointer-label">top</span>
-                        </div>
-                    </div>
-
-                    <!-- Array Blocks Display -->
-                    <div class="array-container" id="array-container">
-                        <!-- Array cells generated dynamically -->
-                    </div>
-
-                    <!-- Pointer Track Bottom (Auxiliary) -->
-                    <div class="pointer-track" id="aux-track-container">
-                        <!-- Auxiliary pointer (i) for traversal -->
-                        <div class="visual-pointer aux" id="aux-pointer" style="transform: translateX(0px); opacity: 0;">
-                            <span class="pointer-arrow">▲</span>
-                            <span class="pointer-label">i</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Simulation Output Logs (Console) -->
-                <div class="console-card">
-                    <div class="console-header">
-                        <span>Terminal Output</span>
-                        <button class="clear-btn" id="clear-console-btn">Clear Logs</button>
-                    </div>
-                    <div class="console-body" id="console-logs">
-                        <div class="console-line system">> Visualizer initialized. Ready for operations.</div>
-                    </div>
-                </div>
-            </section>
         </main>
-
-        <!-- Controls Dashboard -->
-        <footer class="controls-panel card">
-            <div class="controls-grid">
-                <!-- Stack Config Block -->
-                <div class="control-group config-group">
-                    <h3>Stack Config</h3>
-                    <div class="input-action-row">
-                        <div class="input-wrapper">
-                            <label for="stack-size-input">Capacity</label>
-                            <input type="number" id="stack-size-input" min="3" max="10" value="6">
-                        </div>
-                        <button class="btn btn-secondary" id="set-size-btn">Resize</button>
-                    </div>
-                </div>
-
-                <!-- Stack Actions Block -->
-                <div class="control-group actions-group">
-                    <h3>Operations</h3>
-                    <div class="buttons-grid">
-                        <div class="push-action-row">
-                            <input type="text" id="push-value-input" placeholder="Value" maxlength="5">
-                            <button class="btn btn-primary" id="op-push-btn">Push</button>
-                        </div>
-                        <button class="btn btn-primary" id="op-pop-btn">Pop</button>
-                        <button class="btn btn-primary" id="op-peek-btn">Peek</button>
-                        <button class="btn btn-primary" id="op-traverse-btn">Traverse</button>
-                        <button class="btn btn-primary" id="op-isempty-btn">isEmpty</button>
-                        <button class="btn btn-primary" id="op-isfull-btn">isFull</button>
-                        <button class="btn btn-primary" id="op-display-btn">Display</button>
-                    </div>
-                </div>
-
-                <!-- Debug Stepper Block -->
-                <div class="control-group debugger-group">
-                    <h3>Debugger Controls</h3>
-                    <div class="stepper-buttons">
-                        <button class="btn btn-step" id="prev-step-btn" disabled>
-                            <span class="btn-icon">◀</span> Previous Step
-                        </button>
-                        <button class="btn btn-step" id="next-step-btn" disabled>
-                            Next Step <span class="btn-icon">▶</span>
-                        </button>
-                        <button class="btn btn-danger" id="reset-btn">Reset</button>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>

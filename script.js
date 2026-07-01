@@ -1181,6 +1181,7 @@ function adjustCellSizes() {
 // Visual DOM Render Updates
 function renderArray() {
     const container = document.getElementById("array-container");
+    if (!container) return;
     container.innerHTML = "";
     
     // Apply dynamic width sizing
@@ -1270,6 +1271,8 @@ function updateStatsUI() {
     const badgeEmpty = document.getElementById("badge-empty");
     const badgeFull = document.getElementById("badge-full");
     
+    if (!badgeEmpty || !badgeFull) return;
+    
     if (state.topIndex === -1) {
         badgeEmpty.classList.remove("hidden");
     } else {
@@ -1285,6 +1288,7 @@ function updateStatsUI() {
 
 function updateStepCounterUI() {
     const counterEl = document.getElementById("step-counter-ui");
+    if (!counterEl) return;
     if (state.activeOp === null) {
         counterEl.textContent = "Step: -- / --";
     } else {
@@ -1310,6 +1314,7 @@ function clearLineHighlights() {
 function loadPseudocode(opName) {
     const lines = PSEUDOCODE_DATA[opName];
     const wrapper = document.getElementById("code-lines-wrapper");
+    if (!wrapper) return;
     wrapper.innerHTML = "";
     
     lines.forEach((line, index) => {
@@ -1333,6 +1338,7 @@ function removeLastLog() {
 
 function renderLogs() {
     const consoleLogs = document.getElementById("console-logs");
+    if (!consoleLogs) return;
     consoleLogs.innerHTML = "";
     
     state.logs.forEach(log => {
@@ -1345,16 +1351,15 @@ function renderLogs() {
 }
 
 function setControlsLockState(lock) {
-    document.getElementById("stack-size-input").disabled = lock;
-    document.getElementById("set-size-btn").disabled = lock;
-    document.getElementById("push-value-input").disabled = lock;
-    document.getElementById("op-push-btn").disabled = lock;
-    document.getElementById("op-pop-btn").disabled = lock;
-    document.getElementById("op-peek-btn").disabled = lock;
-    document.getElementById("op-traverse-btn").disabled = lock;
-    document.getElementById("op-isempty-btn").disabled = lock;
-    document.getElementById("op-isfull-btn").disabled = lock;
-    document.getElementById("op-display-btn").disabled = lock;
+    const ids = [
+        "stack-size-input", "set-size-btn", "push-value-input", 
+        "op-push-btn", "op-pop-btn", "op-peek-btn", 
+        "op-traverse-btn", "op-isempty-btn", "op-isfull-btn", "op-display-btn"
+    ];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = lock;
+    });
     
     updateStepperButtonsState();
 }
@@ -1362,6 +1367,7 @@ function setControlsLockState(lock) {
 function updateStepperButtonsState() {
     const prevBtn = document.getElementById("prev-step-btn");
     const nextBtn = document.getElementById("next-step-btn");
+    if (!prevBtn || !nextBtn) return;
     
     if (state.activeOp === null) {
         prevBtn.disabled = true;
@@ -1375,70 +1381,104 @@ function updateStepperButtonsState() {
 // Event Bindings
 function setupEventListeners() {
     // Operations
-    document.getElementById("op-push-btn").addEventListener("click", () => {
-        const input = document.getElementById("push-value-input");
-        const val = input.value.trim();
-        if (val === "") {
-            alert("Please enter a value to push.");
-            return;
-        }
-        triggerOperation("push", val);
-        input.value = "";
-    });
+    const pushBtn = document.getElementById("op-push-btn");
+    if (pushBtn) {
+        pushBtn.addEventListener("click", () => {
+            const input = document.getElementById("push-value-input");
+            const val = input.value.trim();
+            if (val === "") {
+                alert("Please enter a value to push.");
+                return;
+            }
+            triggerOperation("push", val);
+            input.value = "";
+        });
+    }
     
-    document.getElementById("op-pop-btn").addEventListener("click", () => {
-        triggerOperation("pop");
-    });
+    const popBtn = document.getElementById("op-pop-btn");
+    if (popBtn) {
+        popBtn.addEventListener("click", () => {
+            triggerOperation("pop");
+        });
+    }
     
-    document.getElementById("op-peek-btn").addEventListener("click", () => {
-        triggerOperation("peek");
-    });
+    const peekBtn = document.getElementById("op-peek-btn");
+    if (peekBtn) {
+        peekBtn.addEventListener("click", () => {
+            triggerOperation("peek");
+        });
+    }
     
-    document.getElementById("op-traverse-btn").addEventListener("click", () => {
-        triggerOperation("traverse");
-    });
+    const travBtn = document.getElementById("op-traverse-btn");
+    if (travBtn) {
+        travBtn.addEventListener("click", () => {
+            triggerOperation("traverse");
+        });
+    }
     
-    document.getElementById("op-isempty-btn").addEventListener("click", () => {
-        triggerOperation("isempty");
-    });
+    const isEBtn = document.getElementById("op-isempty-btn");
+    if (isEBtn) {
+        isEBtn.addEventListener("click", () => {
+            triggerOperation("isempty");
+        });
+    }
     
-    document.getElementById("op-isfull-btn").addEventListener("click", () => {
-        triggerOperation("isfull");
-    });
+    const isFBtn = document.getElementById("op-isfull-btn");
+    if (isFBtn) {
+        isFBtn.addEventListener("click", () => {
+            triggerOperation("isfull");
+        });
+    }
     
-    document.getElementById("op-display-btn").addEventListener("click", () => {
-        triggerOperation("display");
-    });
+    const dispBtn = document.getElementById("op-display-btn");
+    if (dispBtn) {
+        dispBtn.addEventListener("click", () => {
+            triggerOperation("display");
+        });
+    }
     
     // Resize Controls
-    document.getElementById("set-size-btn").addEventListener("click", handleResize);
+    const resizeBtn = document.getElementById("set-size-btn");
+    if (resizeBtn) {
+        resizeBtn.addEventListener("click", handleResize);
+    }
     
     // Steppers
-    document.getElementById("next-step-btn").addEventListener("click", nextStep);
-    document.getElementById("prev-step-btn").addEventListener("click", previousStep);
-    document.getElementById("reset-btn").addEventListener("click", handleReset);
+    const nextBtn = document.getElementById("next-step-btn");
+    if (nextBtn) nextBtn.addEventListener("click", nextStep);
+    
+    const prevBtn = document.getElementById("prev-step-btn");
+    if (prevBtn) prevBtn.addEventListener("click", previousStep);
+    
+    const rstBtn = document.getElementById("reset-btn");
+    if (rstBtn) rstBtn.addEventListener("click", handleReset);
     
     // Clear log button
-    document.getElementById("clear-console-btn").addEventListener("click", () => {
-        const consoleLogs = document.getElementById("console-logs");
-        consoleLogs.innerHTML = `<div class="console-line system">> Logs cleared.</div>`;
-        state.logs = [];
-    });
+    const clearBtn = document.getElementById("clear-console-btn");
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+            const consoleLogs = document.getElementById("console-logs");
+            if (consoleLogs) consoleLogs.innerHTML = `<div class="console-line system">> Logs cleared.</div>`;
+            state.logs = [];
+        });
+    }
     
     // Theory Toggle
     const theoryToggle = document.getElementById("theory-toggle");
     const theorySection = document.querySelector(".theory-section");
-    theoryToggle.addEventListener("click", () => {
-        const expanded = theoryToggle.getAttribute("aria-expanded") === "true";
-        theoryToggle.setAttribute("aria-expanded", !expanded);
-        theoryToggle.textContent = expanded ? "Expand" : "Collapse";
-        if (expanded) {
-            theorySection.classList.add("collapsed");
-        } else {
-            theorySection.classList.remove("collapsed");
-        }
-        setTimeout(realignPointers, 300); // Wait for collapse transition
-    });
+    if (theoryToggle && theorySection) {
+        theoryToggle.addEventListener("click", () => {
+            const expanded = theoryToggle.getAttribute("aria-expanded") === "true";
+            theoryToggle.setAttribute("aria-expanded", !expanded);
+            theoryToggle.textContent = expanded ? "Expand" : "Collapse";
+            if (expanded) {
+                theorySection.classList.add("collapsed");
+            } else {
+                theorySection.classList.remove("collapsed");
+            }
+            setTimeout(realignPointers, 300); // Wait for collapse transition
+        });
+    }
     
     // Resizing window handler
     window.addEventListener("resize", realignPointers);
@@ -1457,4 +1497,770 @@ window.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         alignPointer("top-pointer", -1, true);
     }, 100);
+});
+
+// ===== PRACTICAL 2 START =====
+
+/**
+ * Practical 2 — Infix to Postfix Expression Conversion using Stack
+ * Simulation State Model, Token Transition Validator & Visual Step Engine
+ */
+
+// Practical 2 Simulation State Model
+const infixState = {
+    infixExpression: "",
+    postfixResult: "",
+    operatorStack: [],
+    scannedIndex: -1,
+    processedSymbols: [], // Track completed symbol states for Table View: { symbol, stackAfter, postfixAfter }
+    steps: [],
+    currentStepIndex: -1,
+    simulationActive: false,
+    viewMode: "interactive", // "interactive" or "table"
+    logs: []
+};
+
+// Operator Logic Helpers
+function getPrecedence(op) {
+    if (op === '^') return 3;
+    if (op === '*' || op === '/') return 2;
+    if (op === '+' || op === '-') return 1;
+    if (op === '(') return 0;
+    return -1;
+}
+
+function isLeftAssociative(op) {
+    return op !== '^'; // ^ is right associative, others are left associative
+}
+
+function shouldPop(stackTop, currentOperator) {
+    if (!stackTop || stackTop === '(') return false;
+    
+    const pTop = getPrecedence(stackTop);
+    const pCurr = getPrecedence(currentOperator);
+    
+    return (
+        pTop > pCurr ||
+        (pTop === pCurr && isLeftAssociative(currentOperator))
+    );
+}
+
+// Token-sequence Validation for Infix Input
+function validateInfixExpression(infix) {
+    // Strip all whitespaces
+    const expr = infix.replace(/\s+/g, "");
+    if (expr.length === 0) {
+        return { valid: false, error: "Expression is empty." };
+    }
+    
+    // Count and check balanced parenthesis groupings
+    let parenCount = 0;
+    for (let char of expr) {
+        if (char === '(') parenCount++;
+        else if (char === ')') {
+            parenCount--;
+            if (parenCount < 0) {
+                return { valid: false, error: "Unbalanced parentheses: found closing parenthesis ')' without matching opening '('." };
+            }
+        }
+    }
+    if (parenCount !== 0) {
+        return { valid: false, error: "Unbalanced parentheses: missing closing parenthesis ')'." };
+    }
+
+    // Classify character token types
+    function getTokenType(char) {
+        if (/[A-Za-z]/.test(char)) return "OPERAND";
+        if (/[\+\-\*\/\^]/.test(char)) return "OPERATOR";
+        if (char === '(') return "OPEN_PAREN";
+        if (char === ')') return "CLOSE_PAREN";
+        return "INVALID";
+    }
+
+    // Token transition verification loop
+    let prevType = "START";
+    let operandCount = 0;
+
+    for (let i = 0; i < expr.length; i++) {
+        const char = expr[i];
+        const type = getTokenType(char);
+        
+        if (type === "INVALID") {
+            return { valid: false, error: `Invalid character '${char}' detected. Supported tokens are A-Z, a-z, and operator symbols (+ - * / ^).` };
+        }
+
+        if (type === "OPERAND") {
+            operandCount++;
+        }
+
+        // Validate allowed transitions
+        if (prevType === "START") {
+            if (type !== "OPERAND" && type !== "OPEN_PAREN") {
+                return { valid: false, error: `Expression cannot start with operator or closing bracket: '${char}'` };
+            }
+        } else if (prevType === "OPERAND") {
+            if (type !== "OPERATOR" && type !== "CLOSE_PAREN") {
+                return { valid: false, error: `Operand '${expr[i-1]}' cannot be followed directly by '${char}'. Multi-character variables are not supported.` };
+            }
+        } else if (prevType === "OPERATOR") {
+            if (type !== "OPERAND" && type !== "OPEN_PAREN") {
+                return { valid: false, error: `Operator '${expr[i-1]}' cannot be followed directly by '${char}'. Consecutive operators and unary symbols are unsupported.` };
+            }
+        } else if (prevType === "OPEN_PAREN") {
+            if (type !== "OPERAND" && type !== "OPEN_PAREN") {
+                return { valid: false, error: `Opening parenthesis '(' cannot be followed directly by '${char}' (empty parentheses or operators are invalid).` };
+            }
+        } else if (prevType === "CLOSE_PAREN") {
+            if (type !== "OPERATOR" && type !== "CLOSE_PAREN") {
+                return { valid: false, error: `Closing parenthesis ')' cannot be followed directly by '${char}' (operands must be separated by operators).` };
+            }
+        }
+        
+        prevType = type;
+    }
+
+    if (operandCount === 0) {
+        return { valid: false, error: "Expression must contain at least one single-character operand." };
+    }
+
+    if (prevType === "OPERATOR") {
+        return { valid: false, error: "Expression cannot end with an operator." };
+    }
+
+    return { valid: true, sanitized: expr };
+}
+
+// Infix to Postfix Microstep Generator
+function generateInfixSteps(expr) {
+    const steps = [];
+    
+    // Virtual variables simulate step operations to capture target state snapshots
+    let virtualStack = [];
+    let virtualPostfix = "";
+    let virtualScannedIndex = -1;
+    let virtualProcessedSymbols = [];
+    let virtualLogs = [{ text: `Initialized visual simulation for: ${expr}`, type: "system" }];
+
+    function getSnapshot() {
+        return {
+            scannedIndex: virtualScannedIndex,
+            operatorStack: [...virtualStack],
+            postfixResult: virtualPostfix,
+            processedSymbols: JSON.parse(JSON.stringify(virtualProcessedSymbols)),
+            logs: JSON.parse(JSON.stringify(virtualLogs))
+        };
+    }
+
+    let lastSnap = getSnapshot();
+
+    function addStep(lineIndex, explanation, mutationFn) {
+        mutationFn();
+        const nextSnap = getSnapshot();
+        const currentBefore = lastSnap;
+        const currentAfter = nextSnap;
+        
+        steps.push({
+            lineIndex,
+            explanation,
+            execute: () => {
+                infixState.scannedIndex = currentAfter.scannedIndex;
+                infixState.operatorStack = [...currentAfter.operatorStack];
+                infixState.postfixResult = currentAfter.postfixResult;
+                infixState.processedSymbols = JSON.parse(JSON.stringify(currentAfter.processedSymbols));
+                infixState.logs = JSON.parse(JSON.stringify(currentAfter.logs));
+                renderPractical2();
+            },
+            undo: () => {
+                infixState.scannedIndex = currentBefore.scannedIndex;
+                infixState.operatorStack = [...currentBefore.operatorStack];
+                infixState.postfixResult = currentBefore.postfixResult;
+                infixState.processedSymbols = JSON.parse(JSON.stringify(currentBefore.processedSymbols));
+                infixState.logs = JSON.parse(JSON.stringify(currentBefore.logs));
+                renderPractical2();
+            }
+        });
+        
+        lastSnap = nextSnap;
+    }
+
+    // Traverse the infix expression characters
+    for (let i = 0; i < expr.length; i++) {
+        const symbol = expr[i];
+        
+        // Step 1: Scan symbol
+        addStep(2, `Scan symbol '${symbol}' at position ${i + 1} from left to right.`, () => {
+            virtualScannedIndex = i;
+            virtualLogs.push({ text: `Scan character '${symbol}'`, type: "info" });
+        });
+
+        // Step 2: Classify and route symbol
+        if (/[A-Za-z]/.test(symbol)) {
+            // IF symbol is operand
+            addStep(4, `Symbol '${symbol}' is an operand. Append it directly to the postfix output.`, () => {
+                virtualPostfix += symbol;
+                virtualLogs.push({ text: `Append operand '${symbol}' to postfix`, type: "success" });
+                // Append processed row for table snapshot after fully processing the symbol
+                virtualProcessedSymbols.push({
+                    symbol: symbol,
+                    stackAfter: [...virtualStack],
+                    postfixAfter: virtualPostfix,
+                    stepIndex: steps.length
+                });
+            });
+        }
+        else if (symbol === '(') {
+            // ELSE IF symbol is '('
+            addStep(6, `Symbol is '('. Push it onto the operator stack.`, () => {
+                virtualStack.push('(');
+                virtualLogs.push({ text: `Push '(' onto stack`, type: "system" });
+                virtualProcessedSymbols.push({
+                    symbol: '(',
+                    stackAfter: [...virtualStack],
+                    postfixAfter: virtualPostfix,
+                    stepIndex: steps.length
+                });
+            });
+        }
+        else if (symbol === ')') {
+            // ELSE IF symbol is ')' -> pop and append until '('
+            while (virtualStack.length > 0 && virtualStack[virtualStack.length - 1] !== '(') {
+                const topOp = virtualStack[virtualStack.length - 1];
+                addStep(8, `Symbol is ')'. Pop operator '${topOp}' from stack and append to postfix output.`, () => {
+                    const popped = virtualStack.pop();
+                    virtualPostfix += popped;
+                    virtualLogs.push({ text: `Popped '${popped}' from stack`, type: "warn" });
+                });
+            }
+            
+            // Pop and discard '('
+            addStep(9, `Opening parenthesis '(' is popped and discarded from the stack.`, () => {
+                virtualStack.pop(); // discard '('
+                virtualLogs.push({ text: `Discarded '(' from stack`, type: "system" });
+                virtualProcessedSymbols.push({
+                    symbol: ')',
+                    stackAfter: [...virtualStack],
+                    postfixAfter: virtualPostfix,
+                    stepIndex: steps.length
+                });
+            });
+        }
+        else {
+            // ELSE (operator) -> pop while shouldPop is true
+            while (virtualStack.length > 0 && shouldPop(virtualStack[virtualStack.length - 1], symbol)) {
+                const topOp = virtualStack[virtualStack.length - 1];
+                addStep(12, `Compare precedence: stack top '${topOp}' has higher or equal precedence than '${symbol}'. Pop '${topOp}' and append to postfix.`, () => {
+                    const popped = virtualStack.pop();
+                    virtualPostfix += popped;
+                    virtualLogs.push({ text: `Popped '${popped}' from stack (precedence hierarchy check)`, type: "warn" });
+                });
+            }
+            
+            // Push symbol
+            addStep(13, `Push operator '${symbol}' onto the stack.`, () => {
+                virtualStack.push(symbol);
+                virtualLogs.push({ text: `Pushed operator '${symbol}' onto stack`, type: "success" });
+                virtualProcessedSymbols.push({
+                    symbol: symbol,
+                    stackAfter: [...virtualStack],
+                    postfixAfter: virtualPostfix,
+                    stepIndex: steps.length
+                });
+            });
+        }
+    }
+
+    // Flush remaining operator elements
+    if (virtualStack.length > 0) {
+        addStep(15, "Scanning complete. Stack is not empty. Prepare to pop remaining operators.", () => {
+            virtualLogs.push({ text: "Scanning complete. Flushing stack...", type: "info" });
+        });
+        
+        while (virtualStack.length > 0) {
+            const topOp = virtualStack[virtualStack.length - 1];
+            addStep(16, `Pop remaining operator '${topOp}' from stack and append to postfix output.`, () => {
+                const popped = virtualStack.pop();
+                virtualPostfix += popped;
+                virtualLogs.push({ text: `Popped remaining operator '${popped}' from stack`, type: "warn" });
+                
+                if (virtualStack.length === 0) {
+                    virtualProcessedSymbols.push({
+                        symbol: "EOF",
+                        stackAfter: [],
+                        postfixAfter: virtualPostfix,
+                        stepIndex: steps.length
+                    });
+                }
+            });
+        }
+    } else {
+        addStep(15, "Scanning complete. Stack is empty. Conversion complete.", () => {
+            virtualLogs.push({ text: "Scanning complete. Stack is empty.", type: "info" });
+            virtualProcessedSymbols.push({
+                symbol: "EOF",
+                stackAfter: [],
+                postfixAfter: virtualPostfix,
+                stepIndex: steps.length
+            });
+        });
+    }
+
+    return steps;
+}
+
+// Initializer / Reset Simulation for Infix to Postfix conversion
+function initializePractical2Simulation(expr) {
+    const validation = validateInfixExpression(expr);
+    if (!validation.valid) {
+        document.getElementById("explanation-text-p2").textContent = `Validation Error: ${validation.error}`;
+        
+        infixState.infixExpression = "";
+        infixState.postfixResult = "";
+        infixState.operatorStack = [];
+        infixState.scannedIndex = -1;
+        infixState.processedSymbols = [];
+        infixState.steps = [];
+        infixState.currentStepIndex = -1;
+        infixState.simulationActive = false;
+        
+        renderPractical2();
+        
+        const consoleLogs = document.getElementById("console-logs-p2");
+        if (consoleLogs) {
+            consoleLogs.innerHTML = `<div class="console-line error">> Error: ${validation.error}</div>`;
+        }
+        return;
+    }
+
+    const sanitizedExpr = validation.sanitized;
+    infixState.infixExpression = sanitizedExpr;
+    infixState.postfixResult = "";
+    infixState.operatorStack = [];
+    infixState.scannedIndex = -1;
+    infixState.processedSymbols = [];
+    infixState.logs = [{ text: `Validated expression: ${sanitizedExpr}`, type: "success" }];
+    
+    // Generate step arrays
+    infixState.steps = generateInfixSteps(sanitizedExpr);
+    infixState.currentStepIndex = -1;
+    infixState.simulationActive = true;
+    
+    renderPractical2();
+    
+    document.getElementById("explanation-text-p2").textContent = `Expression loaded successfully. Click "Next Step" to begin scan traversal.`;
+    
+    const statusBadge = document.getElementById("debugger-status-p2");
+    if (statusBadge) {
+        statusBadge.textContent = "WAITING";
+        statusBadge.className = "debugger-badge active";
+    }
+}
+
+// Stepper execution controls
+function nextStepP2() {
+    if (!infixState.simulationActive || infixState.currentStepIndex >= infixState.steps.length - 1) return;
+    
+    infixState.currentStepIndex++;
+    const step = infixState.steps[infixState.currentStepIndex];
+    step.execute();
+    
+    const statusBadge = document.getElementById("debugger-status-p2");
+    if (statusBadge) {
+        if (infixState.currentStepIndex === infixState.steps.length - 1) {
+            statusBadge.textContent = "FINISHED";
+            statusBadge.className = "debugger-badge finished";
+        } else {
+            statusBadge.textContent = "RUNNING";
+            statusBadge.className = "debugger-badge active";
+        }
+    }
+}
+
+function previousStepP2() {
+    if (!infixState.simulationActive || infixState.currentStepIndex < 0) return;
+    
+    const step = infixState.steps[infixState.currentStepIndex];
+    step.undo();
+    
+    infixState.currentStepIndex--;
+    
+    const statusBadge = document.getElementById("debugger-status-p2");
+    if (statusBadge) {
+        if (infixState.currentStepIndex === -1) {
+            statusBadge.textContent = "WAITING";
+            statusBadge.className = "debugger-badge active";
+            document.getElementById("explanation-text-p2").textContent = `Expression loaded successfully. Click "Next Step" to begin scan traversal.`;
+        } else {
+            statusBadge.textContent = "RUNNING";
+            statusBadge.className = "debugger-badge active";
+        }
+    }
+}
+
+function resetSimulationP2() {
+    if (!infixState.infixExpression) return;
+    
+    infixState.postfixResult = "";
+    infixState.operatorStack = [];
+    infixState.scannedIndex = -1;
+    infixState.processedSymbols = [];
+    infixState.currentStepIndex = -1;
+    infixState.logs = [{ text: `Visualizer reset. Scanned expression: ${infixState.infixExpression}`, type: "system" }];
+    
+    renderPractical2();
+    
+    const statusBadge = document.getElementById("debugger-status-p2");
+    if (statusBadge) {
+        statusBadge.textContent = "WAITING";
+        statusBadge.className = "debugger-badge active";
+    }
+    
+    document.getElementById("explanation-text-p2").textContent = `Expression loaded successfully. Click "Next Step" to begin scan traversal.`;
+}
+
+// Visual DOM updates for Practical 2
+function renderPractical2() {
+    // 1. Step Counter UI
+    const counterEl = document.getElementById("step-counter-ui-p2");
+    if (counterEl) {
+        if (infixState.steps.length === 0) {
+            counterEl.textContent = "Step: -- / --";
+        } else {
+            const stepNum = infixState.currentStepIndex + 1;
+            counterEl.textContent = `Step: ${stepNum} / ${infixState.steps.length}`;
+        }
+    }
+    
+    // 2. Pseudocode highlighting
+    clearLineHighlightsP2();
+    if (infixState.currentStepIndex === -1) {
+        highlightLineP2(1); // START line highlight
+    } else if (infixState.currentStepIndex === infixState.steps.length - 1) {
+        highlightLineP2(17); // STOP line highlight
+    } else {
+        const step = infixState.steps[infixState.currentStepIndex];
+        highlightLineP2(step.lineIndex);
+        document.getElementById("explanation-text-p2").textContent = step.explanation;
+    }
+    
+    // 3. Render Views
+    renderInteractiveViewP2();
+    renderTableViewP2();
+    renderLogsP2();
+    updateStepperButtonsStateP2();
+}
+
+function renderInteractiveViewP2() {
+    const infixDisplay = document.getElementById("infix-display");
+    const stackDisplay = document.getElementById("vertical-operator-stack");
+    const postfixDisplay = document.getElementById("postfix-output-display");
+    if (!infixDisplay || !stackDisplay || !postfixDisplay) return;
+    
+    if (!infixState.infixExpression) {
+        infixDisplay.innerHTML = `<span class="empty-infix-placeholder">No expression loaded</span>`;
+        stackDisplay.innerHTML = `<div class="empty-stack-msg">Empty</div>`;
+        postfixDisplay.innerHTML = `<span class="empty-postfix-placeholder">Empty</span>`;
+        return;
+    }
+    
+    // Highlight characters in scan row
+    infixDisplay.innerHTML = "";
+    for (let i = 0; i < infixState.infixExpression.length; i++) {
+        const char = infixState.infixExpression[i];
+        const span = document.createElement("span");
+        span.className = "infix-char";
+        if (i === infixState.scannedIndex) {
+            span.classList.add("active-char");
+        } else if (i < infixState.scannedIndex) {
+            span.classList.add("scanned");
+        }
+        span.textContent = char;
+        infixDisplay.appendChild(span);
+    }
+    
+    // Render operator stack list
+    stackDisplay.innerHTML = "";
+    if (infixState.operatorStack.length === 0) {
+        stackDisplay.innerHTML = `<div class="empty-stack-msg">Empty</div>`;
+    } else {
+        infixState.operatorStack.forEach((char, index) => {
+            const cell = document.createElement("div");
+            cell.className = "p2-stack-cell";
+            if (index === infixState.operatorStack.length - 1) {
+                cell.classList.add("active-top");
+            }
+            cell.textContent = char;
+            stackDisplay.appendChild(cell);
+        });
+    }
+    
+    // Render postfix outputs
+    postfixDisplay.innerHTML = "";
+    if (infixState.postfixResult.length === 0) {
+        postfixDisplay.innerHTML = `<span class="empty-postfix-placeholder">Empty</span>`;
+    } else {
+        for (let char of infixState.postfixResult) {
+            const span = document.createElement("span");
+            span.className = "postfix-char";
+            span.textContent = char;
+            postfixDisplay.appendChild(span);
+        }
+    }
+}
+
+function renderTableViewP2() {
+    const tableBody = document.getElementById("table-body-p2");
+    if (!tableBody) return;
+    tableBody.innerHTML = "";
+    
+    // 0. Update the live symbol label above the table
+    const liveSymbolVal = document.getElementById("table-live-symbol-val");
+    let currentSymbolName = "-";
+    if (infixState.currentStepIndex !== -1) {
+        if (infixState.scannedIndex !== -1) {
+            const step = infixState.steps[infixState.currentStepIndex];
+            if (step && (step.lineIndex === 14 || step.lineIndex === 15 || step.lineIndex === 16)) {
+                currentSymbolName = "EOF (Flush)";
+            } else {
+                currentSymbolName = infixState.infixExpression[infixState.scannedIndex] || "EOF";
+            }
+        } else {
+            currentSymbolName = "START";
+        }
+    }
+    if (liveSymbolVal) {
+        liveSymbolVal.textContent = currentSymbolName;
+    }
+    
+    // 1. Render finalized rows (finalized in steps before current step)
+    const finalized = infixState.processedSymbols.filter(row => row.stepIndex !== undefined && row.stepIndex < infixState.currentStepIndex);
+    
+    finalized.forEach((row) => {
+        const tr = document.createElement("tr");
+        
+        const tdSymbol = document.createElement("td");
+        tdSymbol.textContent = row.symbol;
+        
+        const tdStack = document.createElement("td");
+        tdStack.textContent = row.stackAfter.length > 0 ? row.stackAfter.join(" ") : "empty";
+        
+        const tdPostfix = document.createElement("td");
+        tdPostfix.textContent = row.postfixAfter || "empty";
+        
+        tr.appendChild(tdSymbol);
+        tr.appendChild(tdStack);
+        tr.appendChild(tdPostfix);
+        tableBody.appendChild(tr);
+    });
+    
+    // 2. Append highlighted live row showing current step state
+    if (infixState.currentStepIndex !== -1) {
+        const tr = document.createElement("tr");
+        tr.className = "live-row";
+        
+        const tdSymbol = document.createElement("td");
+        tdSymbol.textContent = currentSymbolName;
+        
+        const tdStack = document.createElement("td");
+        tdStack.textContent = infixState.operatorStack.length > 0 ? infixState.operatorStack.join(" ") : "empty";
+        
+        const tdPostfix = document.createElement("td");
+        tdPostfix.textContent = infixState.postfixResult || "empty";
+        
+        tr.appendChild(tdSymbol);
+        tr.appendChild(tdStack);
+        tr.appendChild(tdPostfix);
+        tableBody.appendChild(tr);
+    }
+    
+    // 3. Auto-scroll only inside table scroll container to the latest row
+    const scrollContainer = document.getElementById("table-scroll-container-p2");
+    if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    }
+}
+
+function renderLogsP2() {
+    const consoleLogs = document.getElementById("console-logs-p2");
+    if (!consoleLogs) return;
+    consoleLogs.innerHTML = "";
+    
+    infixState.logs.forEach(log => {
+        const line = document.createElement("div");
+        line.className = `console-line ${log.type}`;
+        line.textContent = `> ${log.text}`;
+        consoleLogs.appendChild(line);
+    });
+    consoleLogs.scrollTop = consoleLogs.scrollHeight;
+}
+
+function highlightLineP2(lineNum) {
+    clearLineHighlightsP2();
+    const lineEl = document.getElementById(`code-line-p2-${lineNum}`);
+    if (lineEl) {
+        lineEl.classList.add("line-highlight");
+        lineEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+}
+
+function clearLineHighlightsP2() {
+    const lines = document.querySelectorAll("#code-lines-wrapper-p2 .code-line.line-highlight");
+    lines.forEach(el => el.classList.remove("line-highlight"));
+}
+
+function updateStepperButtonsStateP2() {
+    const prevBtn = document.getElementById("prev-step-btn-p2");
+    const nextBtn = document.getElementById("next-step-btn-p2");
+    if (!prevBtn || !nextBtn) return;
+    
+    if (!infixState.simulationActive || infixState.steps.length === 0) {
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+    } else {
+        prevBtn.disabled = (infixState.currentStepIndex === -1);
+        nextBtn.disabled = (infixState.currentStepIndex === infixState.steps.length - 1);
+    }
+}
+
+// DOM Setup and Hook bindings for Practical 2 & Navigation
+window.addEventListener("DOMContentLoaded", () => {
+    // 1. Sidebar module switching logic
+    const navItems = document.querySelectorAll(".sidebar-nav .nav-item");
+    const mainTitle = document.getElementById("app-main-title");
+    
+    navItems.forEach(item => {
+        item.addEventListener("click", () => {
+            if (item.classList.contains("disabled")) return;
+            
+            navItems.forEach(nav => nav.classList.remove("active"));
+            item.classList.add("active");
+            
+            const target = item.getAttribute("data-target");
+            if (target === "practical-1") {
+                document.getElementById("practical-1-wrapper").classList.remove("hidden");
+                document.getElementById("practical-2-wrapper").classList.add("hidden");
+                if (mainTitle) mainTitle.innerHTML = `Stack <span class="accent-text">using Array</span>`;
+                
+                // Realign pointers and recalculate arrays on switch back
+                setTimeout(() => {
+                    if (typeof realignPointers === "function") realignPointers();
+                }, 100);
+            } else if (target === "practical-2") {
+                document.getElementById("practical-2-wrapper").classList.remove("hidden");
+                document.getElementById("practical-1-wrapper").classList.add("hidden");
+                if (mainTitle) mainTitle.innerHTML = `Infix to Postfix <span class="accent-text">Conversion</span>`;
+                
+                // Load default expression if none loaded yet
+                if (!infixState.infixExpression) {
+                    const defaultExpr = document.getElementById("infix-input").value.trim() || "A*(B+C-D)";
+                    initializePractical2Simulation(defaultExpr);
+                }
+            }
+        });
+    });
+
+    // 2. Collapsible sidebar logic
+    const sidebar = document.getElementById("sidebar");
+    const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
+    const sidebarOpenBtn = document.getElementById("sidebar-open-btn");
+
+    if (sidebar && sidebarToggleBtn && sidebarOpenBtn) {
+        sidebarToggleBtn.addEventListener("click", () => {
+            sidebar.classList.add("collapsed");
+            sidebarOpenBtn.style.display = "flex";
+            setTimeout(() => {
+                if (typeof realignPointers === "function") realignPointers();
+            }, 300);
+        });
+
+        sidebarOpenBtn.addEventListener("click", () => {
+            sidebar.classList.remove("collapsed");
+            sidebarOpenBtn.style.display = "none";
+            setTimeout(() => {
+                if (typeof realignPointers === "function") realignPointers();
+            }, 300);
+        });
+    }
+
+    // 3. Dual visualization toggles
+    const btnToggleInteractive = document.getElementById("btn-toggle-interactive");
+    const btnToggleTable = document.getElementById("btn-toggle-table");
+    const interactiveArea = document.getElementById("interactive-view-area");
+    const tableArea = document.getElementById("table-view-area");
+
+    if (btnToggleInteractive && btnToggleTable && interactiveArea && tableArea) {
+        btnToggleInteractive.addEventListener("click", () => {
+            btnToggleInteractive.classList.add("active");
+            btnToggleTable.classList.remove("active");
+            interactiveArea.classList.remove("hidden");
+            tableArea.classList.add("hidden");
+            infixState.viewMode = "interactive";
+        });
+
+        btnToggleTable.addEventListener("click", () => {
+            btnToggleTable.classList.add("active");
+            btnToggleInteractive.classList.remove("active");
+            tableArea.classList.remove("hidden");
+            interactiveArea.classList.add("hidden");
+            infixState.viewMode = "table";
+        });
+    }
+
+    // 4. Expression control panel inputs
+    const btnInitP2 = document.getElementById("btn-init-p2");
+    if (btnInitP2) {
+        btnInitP2.addEventListener("click", () => {
+            const input = document.getElementById("infix-input");
+            if (input) {
+                initializePractical2Simulation(input.value.trim());
+            }
+        });
+    }
+
+    // Example Presets Selector
+    const presetButtons = document.querySelectorAll(".btn-preset");
+    presetButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const expr = btn.getAttribute("data-expr");
+            const input = document.getElementById("infix-input");
+            if (input) {
+                input.value = expr;
+            }
+            initializePractical2Simulation(expr);
+        });
+    });
+
+    // Steppers bindings
+    const nextBtnP2 = document.getElementById("next-step-btn-p2");
+    if (nextBtnP2) nextBtnP2.addEventListener("click", nextStepP2);
+
+    const prevBtnP2 = document.getElementById("prev-step-btn-p2");
+    if (prevBtnP2) prevBtnP2.addEventListener("click", previousStepP2);
+
+    const rstBtnP2 = document.getElementById("reset-btn-p2");
+    if (rstBtnP2) rstBtnP2.addEventListener("click", resetSimulationP2);
+
+    // Clear logs console
+    const clearBtnP2 = document.getElementById("clear-console-btn-p2");
+    if (clearBtnP2) {
+        clearBtnP2.addEventListener("click", () => {
+            infixState.logs = [];
+            renderLogsP2();
+        });
+    }
+
+    // Theory Toggle P2
+    const theoryToggleP2 = document.getElementById("theory-toggle-p2");
+    const theorySectionP2 = document.getElementById("theory-section-p2");
+    if (theoryToggleP2 && theorySectionP2) {
+        theoryToggleP2.addEventListener("click", () => {
+            const expanded = theoryToggleP2.getAttribute("aria-expanded") === "true";
+            theoryToggleP2.setAttribute("aria-expanded", !expanded);
+            theoryToggleP2.textContent = expanded ? "Expand" : "Collapse";
+            if (expanded) {
+                theorySectionP2.classList.add("collapsed");
+            } else {
+                theorySectionP2.classList.remove("collapsed");
+            }
+        });
+    }
 });
