@@ -1982,3 +1982,20 @@ input[type="text"]:focus {
     margin: 0;
     overflow-x: auto;
 }
+
+/* Fullscreen modal specific overrides for C++ IDE experience */
+.p2-drawer.fullscreen .cpp-sample-io {
+    display: none !important; /* Hide sample section to maximize code space */
+}
+
+.p2-drawer.fullscreen .p2-drawer-body {
+    overflow-y: hidden !important; /* Contain scroll within the editor only */
+    gap: 0 !important;
+    height: 100%;
+}
+
+.p2-drawer.fullscreen .cpp-code-container {
+    flex: 1 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+}
